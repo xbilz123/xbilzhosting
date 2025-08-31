@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment XbilzShop</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0f2c, #1b1f3a);
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      margin-top: 10%;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #00aaff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #00b4d8;
+      color: white;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #48cae4;
+      box-shadow: 0 0 15px #48cae4;
+    }
+
+    /* Efek salju */
+    .snow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+    .flake {
+      position: absolute;
+      top: -10px;
+      width: var(--size, 4px);
+      height: var(--size, 4px);
+      background: #fff;
+      border-radius: 50%;
+      opacity: var(--opacity, .8);
+      filter: drop-shadow(0 0 2px rgba(255,255,255,.6));
+      left: var(--left, 50%);
+      animation: fall var(--duration, 12s) linear var(--delay, 0s) infinite;
+      will-change: transform;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-10px) translateX(0) rotate(0deg); }
+      50%  { transform: translateY(50vh) translateX(calc(var(--drift, 40px) / 2)) rotate(360deg); }
+      100% { transform: translateY(110vh) translateX(var(--drift, 40px)) rotate(720deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- layer salju -->
+  <div id="snow-layer" class="snow"></div>
+
+  <!-- konten website -->
+  <div class="container">
+    <h1>Pembayaran</h1>
+    <p>Silakan klik tombol untuk melanjutkan pembayaran</p>
+    <button>Bayar Sekarang</button>
+  </div>
+
+  <!-- JS efek salju -->
+  <script>
+    (function makeSnow({
+      containerId = 'snow-layer',
+      count = 120,
+      minSize = 2,
+      maxSize = 6,
+      minDur = 8,
+      maxDur = 18,
+      maxDrift = 60
+    } = {}) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      const rnd = (a, b) => Math.random() * (b - a) + a;
+      const pick = (arr) => arr[(Math.random() * arr.length) | 0];
+      const shapes = ['50% / 50%', '50% / 45%', '50% / 55%'];
+
+      for (let i = 0; i < count; i++) {
+        const f = document.createElement('span');
+        f.className = 'flake';
+
+        const size = rnd(minSize, maxSize);
+        const duration = rnd(minDur, maxDur);
+        const delay = -rnd(0, maxDur);
+        const left = rnd(0, 100);
+        const drift = pick([1, -1]) * rnd(maxDrift * 0.4, maxDrift);
+        const opacity = rnd(0.35, 0.9);
+
+        f.style.setProperty('--size', `${size}px`);
+        f.style.setProperty('--duration', `${duration}s`);
+        f.style.setProperty('--delay', `${delay}s`);
+        f.style.setProperty('--left', `${left}%`);
+        f.style.setProperty('--drift', `${drift}px`);
+        f.style.setProperty('--opacity', opacity.toFixed(2));
+        f.style.borderRadius = pick(shapes);
+
+        el.appendChild(f);
+      }
+    })();
+  </script>
+</body>
+</html>
