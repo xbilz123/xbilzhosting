@@ -3,111 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Xbilzz</title>
+  <title>Payment Gateway</title>
   <style>
-    body {
+    /* Reset */
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #2a003f, #150022);
-      color: white;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #fff;
+    }
+
+    header {
+      background: linear-gradient(90deg, #d4af37, #a67c00);
+      padding: 20px;
       text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #000;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #111;
+      padding: 15px;
+    }
+
+    nav a {
+      color: #d4af37;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #fff;
     }
 
     .container {
-      max-width: 500px;
-      margin: auto;
+      max-width: 900px;
+      margin: 40px auto;
+      text-align: center;
       padding: 20px;
     }
 
-    h1 {
-      font-size: 24px;
-      color: #bb86fc;
-      margin-bottom: 5px;
-    }
-
     h2 {
-      font-size: 20px;
-      margin: 10px 0 20px;
-      color: #e2b6ff;
-    }
-
-    .qr-box {
-      background: #2b134d;
-      border-radius: 16px;
-      padding: 15px;
-      box-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
-    }
-
-    .qr-box img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-
-    .btn-group {
-      margin-top: 15px;
-    }
-
-    .btn {
-      background: linear-gradient(45deg, #7b2cbf, #9d4edd);
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      margin: 5px;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #d4af37;
+      text-shadow: 0 0 10px #a67c00;
     }
 
     .card {
-      background: #3c1a5b;
-      margin: 15px 0;
-      padding: 12px;
-      border-radius: 12px;
-      text-align: left;
-      box-shadow: 0 0 10px rgba(157, 78, 221, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #d4af37;
+      border-radius: 15px;
+      padding: 30px;
+      margin: 20px auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
 
-    .copy-btn {
-      display: block;
-      background: linear-gradient(45deg, #9d4edd, #c77dff);
-      text-align: center;
-      border-radius: 8px;
-      padding: 8px;
-      margin-top: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .social {
-      margin-top: 20px;
-    }
-
-    .social a {
-      display: block;
-      text-decoration: none;
-      margin: 10px auto;
-      padding: 12px;
+    .card img {
+      max-width: 200px;
       border-radius: 10px;
-      font-weight: bold;
-      max-width: 300px;
-      color: white;
+      border: 2px solid #d4af37;
+      margin-bottom: 15px;
     }
 
-    .wa { background: #25d366; }
-    .tg { background: #0088cc; }
-    .web { background: linear-gradient(45deg, #7b2cbf, #c77dff); }
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #000;
+      background: linear-gradient(90deg, #ffd700, #ffae00);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: linear-gradient(90deg, #ffae00, #ffd700);
+      transform: scale(1.05);
+    }
+
+    footer {
+      background: #111;
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Payment Xbilz shop</h1>
-    <h2>Silahkan pilih pembayaran di bawah ini</h2>
+  <header>💎 Payment Gateway 💎</header>
 
+  <nav>
+    <a href="#utama">Saluran Utama</a>
+    <a href="#testimoni">Testimoni</a>
+  </nav>
+
+  <div class="container" id="utama">
+    <h2>Metode Pembayaran</h2>
+
+    <div class="card">
+      <h3>QRIS</h3>
+      <img src="https://files.catbox.moe/hqtloz.jpg" alt="QRIS">
+      <br>
+      <button class="btn">Bayar via QRIS</button>
+    </div>
+
+    <div class="card">
+      <h3>DANA</h3>
+      <p>No. DANA: <strong>085293788180</strong></p>
+      <p>Nama: <strong>Istinandiroh</strong></p>
+      <button class="btn">Bayar via DANA</button>
+    </div>
+  </div>
+
+  <div class="container" id="testimoni">
+    <h2>Saluran Testimoni</h2>
+    <div class="card">
+      <p>✨ "Pelayanan cepat dan terpercaya!"</p>
+      <p>✨ "Pembayaran mudah, tinggal scan QR." </p>
+      <p>✨ "Rekomendasi banget 👍" </p>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Payment Gateway - All Rights Reserved
+  </footer>
+
+</body>
+    </html>
     <div class="qr-box">
       <!-- Ganti link QRIS sesuai punya kamu -->
       <img src="https://files.catbox.moe/hqtloz.jpg">
