@@ -12,27 +12,35 @@
       color: white;
       text-align: center;
     }
+
     header {
-      padding: 30px;
+      padding: 30px 20px;
     }
+
+    /* Logo Bulat */
     .logo {
-      width:120px; 
-      height:120px; 
-      border-radius:50%; 
-      background:#2563eb; 
-      display:flex; 
-      align-items:center; 
-      justify-content:center; 
-      margin:0 auto 15px auto; 
-      font-size:28px; 
-      font-weight:bold; 
-      color:white;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #2563eb, #1e40af);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
       font-family: Arial, sans-serif;
-      box-shadow: 0 0 20px rgba(37,99,235,0.7);
+      box-shadow: 0 0 25px rgba(37,99,235,0.9), 
+                  0 0 50px rgba(37,99,235,0.6);
+      letter-spacing: 2px;
     }
+
     h1 {
       color: #4fc3f7;
+      margin-bottom: 10px;
     }
+
     .payment-option {
       width: 80%;
       margin: 15px auto;
@@ -41,13 +49,13 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .payment-option:hover {
       transform: scale(1.03);
       opacity: 0.9;
     }
+
     .dana { background: #1e3a8a; }
-    .ovo { background: #6b21a8; }
-    .gopay { background: #065f46; }
     .qris { background: #b91c1c; }
 
     /* Modal */
@@ -61,6 +69,7 @@
       justify-content: center;
       align-items: center;
     }
+
     .modal-content {
       background: #1f2937;
       padding: 25px;
@@ -70,11 +79,14 @@
       color: white;
       text-align: center;
       position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
+
     .modal-content h2 {
       margin-bottom: 15px;
       color: #4fc3f7;
     }
+
     .close {
       position: absolute;
       right: 15px; top: 10px;
@@ -82,9 +94,11 @@
       cursor: pointer;
       color: #aaa;
     }
+
     .close:hover {
       color: white;
     }
+
     .btn {
       margin-top: 15px;
       background: #2563eb;
@@ -94,12 +108,16 @@
       border: none;
       cursor: pointer;
     }
+
     .btn:hover {
       background: #1d4ed8;
     }
+
     .qrcode {
       margin: 15px auto;
       width: 200px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
     }
   </style>
 </head>
@@ -117,16 +135,6 @@
     <p>Instant transfer with zero fees</p>
   </div>
 
-  <div class="payment-option ovo" onclick="openModal('ovo')">
-    <h2>OVO</h2>
-    <p>Pay with just your phone number</p>
-  </div>
-
-  <div class="payment-option gopay" onclick="openModal('gopay')">
-    <h2>GoPay</h2>
-    <p>Indonesia's favorite e-wallet</p>
-  </div>
-
   <div class="payment-option qris" onclick="openModal('qris')">
     <h2>QRIS</h2>
     <p>Scan and pay with any app</p>
@@ -154,29 +162,13 @@
           <p>Name: Wulyani Astuti</p>
           <small>After payment, send receipt via WhatsApp</small>
         `;
-      } else if(type === "ovo") {
-        title.innerText = "Pay with OVO";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085714312833</h3>
-          <p>Name: Wulyani Astuti</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
-      } else if(type === "gopay") {
-        title.innerText = "Pay with GoPay";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085714312833</h3>
-          <p>Name: Wulyani Astuti</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
       } else if(type === "qris") {
         title.innerText = "Scan QRIS Code";
         body.innerHTML = `
           <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
-          <p>Alternative payment methods:</p>
+          <p>Alternative payment number:</p>
           <h3>085714312833</h3>
-          <p>(OVO / DANA / GoPay)</p>
+          <p>(DANA)</p>
         `;
       }
       document.getElementById("paymentModal").style.display = "flex";
@@ -188,73 +180,4 @@
   </script>
 
 </body>
-  </html>    <p>Pay with just your phone number</p>
-  </div>
-
-  <div class="payment-option gopay" onclick="openModal('gopay')">
-    <h2>GoPay</h2>
-    <p>Indonesia's favorite e-wallet</p>
-  </div>
-
-  <div class="payment-option qris" onclick="openModal('qris')">
-    <h2>QRIS</h2>
-    <p>Scan and pay with any app</p>
-  </div>
-
-  <!-- Modal -->
-  <div id="paymentModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <div id="modalBody"></div>
-      <button class="btn" onclick="closeModal()">Got It, Thanks!</button>
-    </div>
-  </div>
-
-  <script>
-    function openModal(type) {
-      const title = document.getElementById("modalTitle");
-      const body = document.getElementById("modalBody");
-      if(type === "dana") {
-        title.innerText = "Pay with DANA";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085714312833</h3>
-          <p>Name: Wulyani Astuti</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
-      } else if(type === "ovo") {
-        title.innerText = "Pay with OVO";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085714312833</h3>
-          <p>Name: Wulyani Astuti</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
-      } else if(type === "gopay") {
-        title.innerText = "Pay with GoPay";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085714312833</h3>
-          <p>Name: Wulyani Astuti</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
-      } else if(type === "qris") {
-        title.innerText = "Scan QRIS Code";
-        body.innerHTML = `
-          <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
-          <p>Alternative payment methods:</p>
-          <h3>085714312833</h3>
-          <p>(OVO / DANA / GoPay)</p>
-        `;
-      }
-      document.getElementById("paymentModal").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("paymentModal").style.display = "none";
-    }
-  </script>
-
-</body>
-      </html>
+</html>
