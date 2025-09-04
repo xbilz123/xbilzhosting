@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Payment Gateway</title>
+  <title>XBILZ Payment Gateway</title>
   <style>
     body {
       margin: 0;
@@ -15,8 +15,20 @@
     header {
       padding: 30px;
     }
-    header img {
-      width: 120px;
+    .logo {
+      width:120px; 
+      height:120px; 
+      border-radius:50%; 
+      background:#2563eb; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      margin:0 auto 15px auto; 
+      font-size:28px; 
+      font-weight:bold; 
+      color:white;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 20px rgba(37,99,235,0.7);
     }
     h1 {
       color: #4fc3f7;
@@ -94,7 +106,7 @@
 <body>
 
   <header>
-    <img src="https://via.placeholder.com/120x120.png?text=PAEDULZ" alt="Logo">
+    <div class="logo">XBILZ</div>
     <h1>Secure Payment Gateway</h1>
     <p>Choose your preferred payment method below</p>
   </header>
@@ -108,6 +120,75 @@
   <div class="payment-option ovo" onclick="openModal('ovo')">
     <h2>OVO</h2>
     <p>Pay with just your phone number</p>
+  </div>
+
+  <div class="payment-option gopay" onclick="openModal('gopay')">
+    <h2>GoPay</h2>
+    <p>Indonesia's favorite e-wallet</p>
+  </div>
+
+  <div class="payment-option qris" onclick="openModal('qris')">
+    <h2>QRIS</h2>
+    <p>Scan and pay with any app</p>
+  </div>
+
+  <!-- Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+      <button class="btn" onclick="closeModal()">Got It, Thanks!</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal(type) {
+      const title = document.getElementById("modalTitle");
+      const body = document.getElementById("modalBody");
+      if(type === "dana") {
+        title.innerText = "Pay with DANA";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "ovo") {
+        title.innerText = "Pay with OVO";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "gopay") {
+        title.innerText = "Pay with GoPay";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "qris") {
+        title.innerText = "Scan QRIS Code";
+        body.innerHTML = `
+          <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
+          <p>Alternative payment methods:</p>
+          <h3>085714312833</h3>
+          <p>(OVO / DANA / GoPay)</p>
+        `;
+      }
+      document.getElementById("paymentModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("paymentModal").style.display = "none";
+    }
+  </script>
+
+</body>
+  </html>    <p>Pay with just your phone number</p>
   </div>
 
   <div class="payment-option gopay" onclick="openModal('gopay')">
