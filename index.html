@@ -1,46 +1,179 @@
-<table border="1" cellspacing="0" cellpadding="10" style="width:100%; text-align:center; border-collapse:collapse; font-family:Arial, sans-serif;">
-  <thead style="background:#0a0f2c; color:white;">
-    <tr>
-      <th>Paket</th>
-      <th>CPU</th>
-      <th>RAM</th>
-      <th>Storage</th>
-      <th>Bandwidth</th>
-      <th>Harga / Bulan</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><b>VPS Basic</b></td>
-      <td>1 Core</td>
-      <td>1 GB</td>
-      <td>20 GB SSD</td>
-      <td>1 TB</td>
-      <td>Rp 25.000</td>
-    </tr>
-    <tr style="background:#f2f2f2;">
-      <td><b>VPS Starter</b></td>
-      <td>2 Core</td>
-      <td>2 GB</td>
-      <td>40 GB SSD</td>
-      <td>2 TB</td>
-      <td>Rp 50.000</td>
-    </tr>
-    <tr>
-      <td><b>VPS Pro</b></td>
-      <td>3 Core</td>
-      <td>4 GB</td>
-      <td>80 GB SSD</td>
-      <td>3 TB</td>
-      <td>Rp 90.000</td>
-    </tr>
-    <tr style="background:#f2f2f2;">
-      <td><b>VPS Extreme</b></td>
-      <td>4 Core</td>
-      <td>8 GB</td>
-      <td>160 GB NVMe</td>
-      <td>5 TB</td>
-      <td>Rp 150.000</td>
-    </tr>
-  </tbody>
-</table>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Payment Gateway</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0a0f2c, #1b1f3a);
+      color: white;
+      text-align: center;
+    }
+    header {
+      padding: 30px;
+    }
+    header img {
+      width: 120px;
+    }
+    h1 {
+      color: #4fc3f7;
+    }
+    .payment-option {
+      width: 80%;
+      margin: 15px auto;
+      padding: 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .payment-option:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+    .dana { background: #1e3a8a; }
+    .ovo { background: #6b21a8; }
+    .gopay { background: #065f46; }
+    .qris { background: #b91c1c; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #1f2937;
+      padding: 25px;
+      border-radius: 12px;
+      width: 85%;
+      max-width: 400px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content h2 {
+      margin-bottom: 15px;
+      color: #4fc3f7;
+    }
+    .close {
+      position: absolute;
+      right: 15px; top: 10px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #aaa;
+    }
+    .close:hover {
+      color: white;
+    }
+    .btn {
+      margin-top: 15px;
+      background: #2563eb;
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #1d4ed8;
+    }
+    .qrcode {
+      margin: 15px auto;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://via.placeholder.com/120x120.png?text=PAEDULZ" alt="Logo">
+    <h1>Secure Payment Gateway</h1>
+    <p>Choose your preferred payment method below</p>
+  </header>
+
+  <!-- Payment Options -->
+  <div class="payment-option dana" onclick="openModal('dana')">
+    <h2>DANA</h2>
+    <p>Instant transfer with zero fees</p>
+  </div>
+
+  <div class="payment-option ovo" onclick="openModal('ovo')">
+    <h2>OVO</h2>
+    <p>Pay with just your phone number</p>
+  </div>
+
+  <div class="payment-option gopay" onclick="openModal('gopay')">
+    <h2>GoPay</h2>
+    <p>Indonesia's favorite e-wallet</p>
+  </div>
+
+  <div class="payment-option qris" onclick="openModal('qris')">
+    <h2>QRIS</h2>
+    <p>Scan and pay with any app</p>
+  </div>
+
+  <!-- Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+      <button class="btn" onclick="closeModal()">Got It, Thanks!</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal(type) {
+      const title = document.getElementById("modalTitle");
+      const body = document.getElementById("modalBody");
+      if(type === "dana") {
+        title.innerText = "Pay with DANA";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "ovo") {
+        title.innerText = "Pay with OVO";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "gopay") {
+        title.innerText = "Pay with GoPay";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "qris") {
+        title.innerText = "Scan QRIS Code";
+        body.innerHTML = `
+          <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
+          <p>Alternative payment methods:</p>
+          <h3>085714312833</h3>
+          <p>(OVO / DANA / GoPay)</p>
+        `;
+      }
+      document.getElementById("paymentModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("paymentModal").style.display = "none";
+    }
+  </script>
+
+</body>
+      </html>
