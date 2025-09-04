@@ -141,6 +141,44 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
     }
+
+    /* Tombol Musik */
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #2563eb, #1e40af);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 0 15px rgba(37,99,235,0.8);
+      transition: transform 0.3s;
+      z-index: 2000;
+
+      animation: musicGlow 2s infinite ease-in-out;
+    }
+    .music-control:hover {
+      transform: scale(1.1);
+    }
+
+    /* Animasi glow tombol musik */
+    @keyframes musicGlow {
+      0% {
+        box-shadow: 0 0 10px rgba(37,99,235,0.6), 0 0 20px rgba(37,99,235,0.4);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(37,99,235,1), 0 0 50px rgba(37,99,235,0.7);
+      }
+      100% {
+        box-shadow: 0 0 10px rgba(37,99,235,0.6), 0 0 20px rgba(37,99,235,0.4);
+      }
+    }
   </style>
 </head>
 <body>
@@ -172,38 +210,14 @@
     </div>
   </div>
 
-  <script>
-    function openModal(type) {
-      const title = document.getElementById("modalTitle");
-      const body = document.getElementById("modalBody");
-      if(type === "dana") {
-        title.innerText = "Pay with DANA";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085714312833</h3>
-          <p>Name: Wulyani Astuti</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
-      } else if(type === "qris") {
-        title.innerText = "Scan QRIS Code";
-        body.innerHTML = `
-          <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
-          <p>Alternative payment number:</p>
-          <h3>085714312833</h3>
-          <p>(DANA)</p>
-        `;
-      }
-      document.getElementById("paymentModal").style.display = "flex";
-    }
+  <!-- Musik Background -->
+  <audio id="bg-music" autoplay loop>
+    <source src="musik.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
 
-    function closeModal() {
-      document.getElementById("paymentModal").style.display = "none";
-    }
-  </script>
-
-</body>
-</html>    </div>
-  </div>
+  <!-- Tombol Musik -->
+  <div class="music-control" onclick="toggleMusic()">🎵</div>
 
   <script>
     function openModal(type) {
@@ -231,6 +245,19 @@
 
     function closeModal() {
       document.getElementById("paymentModal").style.display = "none";
+    }
+
+    // Kontrol Musik
+    const music = document.getElementById("bg-music");
+    let isPlaying = true;
+
+    function toggleMusic() {
+      if (isPlaying) {
+        music.pause();
+      } else {
+        music.play();
+      }
+      isPlaying = !isPlaying;
     }
   </script>
 
