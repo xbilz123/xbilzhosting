@@ -17,38 +17,16 @@
       padding: 30px 20px;
     }
 
-    /* Logo Bulat dengan efek glow + animasi melayang */
-    .logo {
+    /* Logo pakai gambar bulat */
+    .logo-img {
       width: 130px;
       height: 130px;
       border-radius: 50%;
-      background: linear-gradient(145deg, #2563eb, #1e40af);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin: 0 auto 20px auto;
-      font-size: 30px;
-      font-weight: bold;
-      color: white;
-      font-family: Arial, sans-serif;
+      display: block;
       border: 3px solid white; /* garis putih */
-      box-shadow: 0 0 25px rgba(37,99,235,0.9), 
-                  0 0 50px rgba(37,99,235,0.6);
-      letter-spacing: 2px;
-      animation: floatLogo 3s ease-in-out infinite, glowPulse 3s infinite ease-in-out;
-      transform: rotate(-10deg); /* miring */
-    }
-
-    @keyframes floatLogo {
-      0%   { transform: translateY(0px) rotate(-10deg); }
-      50%  { transform: translateY(-15px) rotate(-10deg); }
-      100% { transform: translateY(0px) rotate(-10deg); }
-    }
-
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5); }
-      50% { box-shadow: 0 0 40px rgba(37,99,235,1), 0 0 80px rgba(37,99,235,0.8); }
-      100% { box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5); }
+      box-shadow: 0 0 25px rgba(37,99,235,0.9),
+                  0 0 50px rgba(37,99,235,0.6); /* efek glow */
     }
 
     h1 {
@@ -178,7 +156,7 @@
 <body>
 
   <header>
-    <div class="logo">XBILZ</div>
+    <img src="https://files.catbox.moe/lsakvn.jpg" alt="XBILZ Logo" class="logo-img">
     <h1>Secure Payment Gateway</h1>
     <p>Choose your preferred payment method below</p>
   </header>
@@ -240,4 +218,4 @@
   </script>
 
 </body>
-  </html>
+</html>
