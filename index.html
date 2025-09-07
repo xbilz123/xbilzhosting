@@ -12,12 +12,9 @@
       color: white;
       text-align: center;
     }
-
     header {
       padding: 30px 20px;
     }
-
-    /* Logo Bulat dengan efek glow + animasi melayang */
     .logo {
       width: 130px;
       height: 130px;
@@ -31,21 +28,16 @@
       font-weight: bold;
       color: white;
       font-family: Arial, sans-serif;
-      box-shadow: 0 0 25px rgba(37,99,235,0.9), 
-                  0 0 50px rgba(37,99,235,0.6);
+      box-shadow: 0 0 25px rgba(37,99,235,0.9),
+                   0 0 50px rgba(37,99,235,0.6);
       letter-spacing: 2px;
-
       animation: floatLogo 3s ease-in-out infinite, glowPulse 3s infinite ease-in-out;
     }
-
-    /* Animasi melayang */
     @keyframes floatLogo {
       0%   { transform: translateY(0px); }
       50%  { transform: translateY(-15px); }
       100% { transform: translateY(0px); }
     }
-
-    /* Animasi glow berdenyut */
     @keyframes glowPulse {
       0% {
         box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5);
@@ -57,12 +49,10 @@
         box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5);
       }
     }
-
     h1 {
       color: #4fc3f7;
       margin-bottom: 10px;
     }
-
     .payment-option {
       width: 80%;
       margin: 15px auto;
@@ -71,16 +61,12 @@
       cursor: pointer;
       transition: 0.3s;
     }
-
     .payment-option:hover {
       transform: scale(1.03);
       opacity: 0.9;
     }
-
     .dana { background: #1e3a8a; }
     .qris { background: #b91c1c; }
-
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -91,7 +77,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .modal-content {
       background: #1f2937;
       padding: 25px;
@@ -103,12 +88,10 @@
       position: relative;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
-
     .modal-content h2 {
       margin-bottom: 15px;
       color: #4fc3f7;
     }
-
     .close {
       position: absolute;
       right: 15px; top: 10px;
@@ -116,11 +99,9 @@
       cursor: pointer;
       color: #aaa;
     }
-
     .close:hover {
       color: white;
     }
-
     .btn {
       margin-top: 15px;
       background: #2563eb;
@@ -130,52 +111,68 @@
       border: none;
       cursor: pointer;
     }
-
     .btn:hover {
       background: #1d4ed8;
     }
-
-    .qrcode {
+    #qrcode {
       margin: 15px auto;
-      width: 200px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
     }
+    .success-message {
+      color: #4CAF50;
+      margin-top: 10px;
+    }
+    .error-message {
+      color: #F44336;
+      margin-top: 10px;
+    }
+    /* Style untuk tombol DANA */
+    .dana {
+      background: #2656A6; /* Warna latar belakang yang lebih sesuai */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .dana img {
+      width: 50px; /* Sesuaikan ukuran logo */
+      margin-bottom: 10px;
+    }
   </style>
+  <!-- Include qrcode.js library -->
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
-
   <header>
     <div class="logo">XBILZ</div>
     <h1>Secure Payment Gateway</h1>
     <p>Choose your preferred payment method below</p>
   </header>
-
-  <!-- Payment Options -->
   <div class="payment-option dana" onclick="openModal('dana')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_dana_blue.svg/1200px-Logo_dana_blue.svg.png" alt="DANA Logo">
     <h2>DANA</h2>
     <p>Instant transfer with zero fees</p>
   </div>
-
   <div class="payment-option qris" onclick="openModal('qris')">
     <h2>QRIS</h2>
     <p>Scan and pay with any app</p>
   </div>
-
-  <!-- Modal -->
   <div id="paymentModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h2 id="modalTitle"></h2>
       <div id="modalBody"></div>
+      <p id="paymentStatus" class="success-message"></p>
       <button class="btn" onclick="closeModal()">Got It, Thanks!</button>
     </div>
   </div>
-
   <script>
     function openModal(type) {
       const title = document.getElementById("modalTitle");
       const body = document.getElementById("modalBody");
+      const paymentStatus = document.getElementById("paymentStatus");
+      paymentStatus.innerText = ""; // Clear previous messages
       if(type === "dana") {
         title.innerText = "Pay with DANA";
         body.innerHTML = `
@@ -186,20 +183,27 @@
         `;
       } else if(type === "qris") {
         title.innerText = "Scan QRIS Code";
-        body.innerHTML = `
-          <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
-          <p>Alternative payment number:</p>
-          <h3>085714312833</h3>
-          <p>(DANA)</p>
-        `;
+        body.innerHTML = '<div id="qrcode"></div><p>Alternative payment number:</p><h3>085714312833</h3><p>(DANA)</p>';
+        // Generate QR Code
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+          text: "085714312833", // Replace with your actual QRIS data
+          width: 200,
+          height: 200,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
       }
       document.getElementById("paymentModal").style.display = "flex";
     }
-
     function closeModal() {
       document.getElementById("paymentModal").style.display = "none";
+      // Simulate payment success
+      document.getElementById("paymentStatus").innerText = "Payment successful!";
+      // You can also simulate payment failure with:
+      // document.getElementById("paymentStatus").innerText = "Payment failed. Please try again.";
+      // document.getElementById("paymentStatus").className = "error-message";
     }
   </script>
-
 </body>
 </html>
