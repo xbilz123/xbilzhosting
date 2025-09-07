@@ -3,97 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XPil Official Payment</title>
+  <title>XBILZ Payment Gateway</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Arial', sans-serif;
-      height: 100vh;
-      overflow: hidden;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0a0f2c, #1b1f3a);
-      color: #fff;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 30px 20px;
+    }
+
+    /* Logo Bulat dengan efek glow + animasi melayang */
+    .logo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #2563eb, #1e40af);
       display: flex;
-      justify-content: center;
       align-items: center;
-      flex-direction: column;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 25px rgba(37,99,235,0.9), 
+                  0 0 50px rgba(37,99,235,0.6);
+      letter-spacing: 2px;
+
+      animation: floatLogo 3s ease-in-out infinite, glowPulse 3s infinite ease-in-out;
+    }
+
+    /* Animasi melayang */
+    @keyframes floatLogo {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Animasi glow berdenyut */
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(37,99,235,1), 0 0 80px rgba(37,99,235,0.8);
+      }
+      100% {
+        box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5);
+      }
     }
 
     h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+      color: #4fc3f7;
+      margin-bottom: 10px;
     }
 
-    .payment-buttons {
-      display: flex;
-      gap: 20px;
+    .payment-option {
+      width: 80%;
+      margin: 15px auto;
+      padding: 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .payment-option:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+
+    .dana { background: #1e3a8a; }
+    .qris { background: #b91c1c; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #1f2937;
+      padding: 25px;
+      border-radius: 12px;
+      width: 85%;
+      max-width: 400px;
+      color: white;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+      color: #4fc3f7;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px; top: 10px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    .close:hover {
+      color: white;
     }
 
     .btn {
-      padding: 15px 30px;
+      margin-top: 15px;
+      background: #2563eb;
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
       border: none;
-      border-radius: 15px;
-      font-size: 1.2em;
       cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 10px rgba(0,255,255,0.5);
     }
 
     .btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(0,255,255,0.8);
+      background: #1d4ed8;
     }
 
-    .btn-dana { background: #4CAF50; color: #fff; }
-    .btn-qris { background: #2196F3; color: #fff; }
-    .btn-nai { background: #FF5722; color: #fff; }
-
-    /* Efek hujan */
-    .rain {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .drop {
-      position: absolute;
-      width: 2px;
-      height: 15px;
-      background: rgba(255,255,255,0.6);
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-20px); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
+    .qrcode {
+      margin: 15px auto;
+      width: 200px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
     }
   </style>
 </head>
 <body>
 
-  <h1>XPil Official</h1>
+  <header>
+    <div class="logo">XBILZ</div>
+    <h1>Secure Payment Gateway</h1>
+    <p>Choose your preferred payment method below</p>
+  </header>
 
-  <div class="payment-buttons">
-    <button class="btn btn-qris" onclick="window.open('https://files.catbox.moe/hqtloz.jpg','_blank')">QRIS</button>
-    <button class="btn btn-dana" onclick="alert('Dana: 085293788180')">DANA</button>
-    <button class="btn btn-nai" onclick="alert('N/A: Istinandiroh')">N/A</button>
+  <!-- Payment Options -->
+  <div class="payment-option dana" onclick="openModal('dana')">
+    <h2>DANA</h2>
+    <p>Instant transfer with zero fees</p>
   </div>
 
-  <div class="rain" id="rain"></div>
+  <div class="payment-option qris" onclick="openModal('qris')">
+    <h2>QRIS</h2>
+    <p>Scan and pay with any app</p>
+  </div>
+
+  <!-- Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+      <button class="btn" onclick="closeModal()">Got It, Thanks!</button>
+    </div>
+  </div>
 
   <script>
-    const rain = document.getElementById('rain');
-    const dropsCount = 100;
+    function openModal(type) {
+      const title = document.getElementById("modalTitle");
+      const body = document.getElementById("modalBody");
+      if(type === "dana") {
+        title.innerText = "Pay with DANA";
+        body.innerHTML = `
+          <p>Send payment to:</p>
+          <h3>085714312833</h3>
+          <p>Name: Wulyani Astuti</p>
+          <small>After payment, send receipt via WhatsApp</small>
+        `;
+      } else if(type === "qris") {
+        title.innerText = "Scan QRIS Code";
+        body.innerHTML = `
+          <img src="https://files.catbox.moe/hqtloz.jpg" class="qrcode" alt="QRIS">
+          <p>Alternative payment number:</p>
+          <h3>085714312833</h3>
+          <p>(DANA)</p>
+        `;
+      }
+      document.getElementById("paymentModal").style.display = "flex";
+    }
 
-    for (let i = 0; i < dropsCount; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'drop';
-      drop.style.left = Math.random() * 100 + 'vw';
-      drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
-      drop.style.animationDelay = Math.random() * 5 + 's';
-      rain.appendChild(drop);
+    function closeModal() {
+      document.getElementById("paymentModal").style.display = "none";
     }
   </script>
 
