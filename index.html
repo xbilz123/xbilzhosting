@@ -31,16 +31,18 @@
       font-weight: bold;
       color: white;
       font-family: Arial, sans-serif;
+      border: 3px solid white; /* garis putih */
       box-shadow: 0 0 25px rgba(37,99,235,0.9), 
                   0 0 50px rgba(37,99,235,0.6);
       letter-spacing: 2px;
       animation: floatLogo 3s ease-in-out infinite, glowPulse 3s infinite ease-in-out;
+      transform: rotate(-10deg); /* miring */
     }
 
     @keyframes floatLogo {
-      0%   { transform: translateY(0px); }
-      50%  { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
+      0%   { transform: translateY(0px) rotate(-10deg); }
+      50%  { transform: translateY(-15px) rotate(-10deg); }
+      100% { transform: translateY(0px) rotate(-10deg); }
     }
 
     @keyframes glowPulse {
@@ -52,7 +54,7 @@
     h1 {
       font-size: 32px;
       font-weight: bold;
-      background: linear-gradient(90deg, #3b82f6, #06b6d4); /* biru → toska (ijo dikit) */
+      background: linear-gradient(90deg, #3b82f6, #06b6d4); /* biru → toska */
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -217,7 +219,7 @@
         body.innerHTML = `
           <p>Send payment to:</p>
           <h3>085293788180</h3>
-          <p>Name: Istinadiroh</p>
+          <p>Name: Istinandiroh</p>
           <small>After payment, send receipt via WhatsApp</small>
         `;
       } else if(type === "qris") {
@@ -238,4 +240,4 @@
   </script>
 
 </body>
-</html>
+  </html>
