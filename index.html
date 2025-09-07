@@ -5,63 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XBILZ Payment Gateway</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0a0f2c, #1b1f3a);
       color: white;
       text-align: center;
+      overflow-x: hidden;
+      background: #000;
+    }
+
+    /* Background canvas */
+    #stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #0d1d31 0%, #000000 100%);
     }
 
     header {
       padding: 30px 20px;
     }
 
-    /* Logo pakai gambar bulat dengan animasi */
+    /* Logo */
     .logo-img {
       width: 130px;
       height: 130px;
       border-radius: 50%;
       margin: 0 auto 20px auto;
       display: block;
-      border: 3px solid white; /* garis putih */
+      border: 3px solid white;
       box-shadow: 0 0 25px rgba(37,99,235,0.9),
-                  0 0 50px rgba(37,99,235,0.6); /* efek glow */
-      animation: floatLogo 3s ease-in-out infinite, glowPulse 3s infinite ease-in-out;
-    }
-
-    /* Animasi melayang */
-    @keyframes floatLogo {
-      0%   { transform: translateY(0px); }
-      50%  { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-
-    /* Animasi glow berdenyut */
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5); }
-      50% { box-shadow: 0 0 40px rgba(37,99,235,1), 0 0 80px rgba(37,99,235,0.8); }
-      100% { box-shadow: 0 0 20px rgba(37,99,235,0.7), 0 0 40px rgba(37,99,235,0.5); }
+                  0 0 50px rgba(37,99,235,0.6);
     }
 
     h1 {
       font-size: 32px;
       font-weight: bold;
-      background: linear-gradient(90deg, #3b82f6, #06b6d4); /* biru → toska */
+      background: linear-gradient(90deg, #3b82f6, #06b6d4);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
       margin-bottom: 10px;
     }
 
     header p {
-      color: #fff;
       font-size: 16px;
       margin-top: 5px;
     }
 
-    /* Payment option card */
+    /* Payment option */
     .payment-option {
       width: 85%;
       margin: 15px auto;
@@ -72,8 +64,8 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      background: #1f2937;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      background: rgba(31,41,55,0.85);
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
     }
 
     .payment-option:hover {
@@ -89,21 +81,9 @@
       padding: 5px;
     }
 
-    .payment-info {
-      text-align: left;
-    }
-
-    .payment-info h2 {
-      margin: 0;
-      font-size: 18px;
-      color: #fff;
-    }
-
-    .payment-info p {
-      margin: 2px 0 0;
-      font-size: 14px;
-      color: #bbb;
-    }
+    .payment-info { text-align: left; }
+    .payment-info h2 { margin: 0; font-size: 18px; color: #fff; }
+    .payment-info p { margin: 2px 0 0; font-size: 14px; color: #bbb; }
 
     /* Modal */
     .modal {
@@ -112,7 +92,7 @@
       z-index: 1000;
       left: 0; top: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
     }
@@ -129,10 +109,7 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
 
-    .modal-content h2 {
-      margin-bottom: 15px;
-      color: #4fc3f7;
-    }
+    .modal-content h2 { margin-bottom: 15px; color: #4fc3f7; }
 
     .close {
       position: absolute;
@@ -142,9 +119,7 @@
       color: #aaa;
     }
 
-    .close:hover {
-      color: white;
-    }
+    .close:hover { color: white; }
 
     .btn {
       margin-top: 15px;
@@ -156,9 +131,7 @@
       cursor: pointer;
     }
 
-    .btn:hover {
-      background: #1d4ed8;
-    }
+    .btn:hover { background: #1d4ed8; }
 
     .qrcode {
       margin: 15px auto;
@@ -169,6 +142,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Background -->
+  <canvas id="stars"></canvas>
 
   <header>
     <img src="https://files.catbox.moe/lsakvn.jpg" alt="XBILZ Logo" class="logo-img">
@@ -204,6 +180,7 @@
   </div>
 
   <script>
+    // Payment modal
     function openModal(type) {
       const title = document.getElementById("modalTitle");
       const body = document.getElementById("modalBody");
@@ -226,11 +203,85 @@
       }
       document.getElementById("paymentModal").style.display = "flex";
     }
-
     function closeModal() {
       document.getElementById("paymentModal").style.display = "none";
     }
-  </script>
 
+    // Stars background
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    let shootingStars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createStars(count) {
+      stars = [];
+      for(let i=0; i<count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.2,
+          alpha: Math.random(),
+          speed: Math.random() * 0.02
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(s => {
+        s.alpha += s.speed;
+        if(s.alpha <=0 || s.alpha>=1) s.speed *= -1;
+        ctx.globalAlpha = s.alpha;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI*2, true);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function createShootingStar() {
+      shootingStars.push({
+        x: Math.random() * canvas.width,
+        y: 0,
+        len: Math.random() * 80 + 10,
+        speed: Math.random() * 8 + 5,
+        angle: Math.PI/4,
+        opacity: 1
+      });
+    }
+
+    function drawShootingStars() {
+      shootingStars.forEach((s, i) => {
+        ctx.strokeStyle = "rgba(255,255,255,"+s.opacity+")";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.len * Math.cos(s.angle), s.y - s.len * Math.sin(s.angle));
+        ctx.stroke();
+        s.x += s.speed * Math.cos(s.angle);
+        s.y += s.speed * Math.sin(s.angle);
+        s.opacity -= 0.01;
+        if(s.opacity <= 0) shootingStars.splice(i,1);
+      });
+    }
+
+    function animate() {
+      drawStars();
+      drawShootingStars();
+      requestAnimationFrame(animate);
+    }
+
+    createStars(150);
+    animate();
+    setInterval(createShootingStar, 4000); // tiap 4 detik ada bintang jatuh
+  </script>
 </body>
-  </html>
+</html>
