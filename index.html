@@ -27,16 +27,60 @@
       padding: 30px 20px;
     }
 
-    /* Logo */
+    /* Logo wrapper dengan bulan glow */
+    .logo-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .moon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.6), transparent 70%);
+      animation: pulse 3s infinite ease-in-out;
+      z-index: 0;
+    }
+
+    /* Logo Xbilz */
     .logo-img {
+      position: relative;
       width: 130px;
       height: 130px;
       border-radius: 50%;
-      margin: 0 auto 20px auto;
       display: block;
+      margin: 0 auto;
       border: 3px solid white;
       box-shadow: 0 0 25px rgba(37,99,235,0.9),
                   0 0 50px rgba(37,99,235,0.6);
+      animation: float 4s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    /* Animasi cahaya bulan */
+    @keyframes pulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+      }
+    }
+
+    /* Animasi naik turun logo */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
     }
 
     h1 {
@@ -147,7 +191,10 @@
   <canvas id="stars"></canvas>
 
   <header>
-    <img src="https://files.catbox.moe/lsakvn.jpg" alt="XBILZ Logo" class="logo-img">
+    <div class="logo-wrapper">
+      <div class="moon"></div>
+      <img src="https://files.catbox.moe/lsakvn.jpg" alt="XBILZ Logo" class="logo-img">
+    </div>
     <h1>Secure Payment Gateway</h1>
     <p>Choose your preferred payment method below</p>
   </header>
@@ -281,7 +328,7 @@
 
     createStars(150);
     animate();
-    setInterval(createShootingStar, 4000); // tiap 4 detik ada bintang jatuh
+    setInterval(createShootingStar, 2000); // tiap 4 detik ada bintang jatuh
   </script>
 </body>
-</html>
+  </html>
