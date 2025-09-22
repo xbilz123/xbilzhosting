@@ -41,12 +41,12 @@
       width: 170px;
       height: 170px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(37,99,235,0.6), transparent 70%);
+      background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%);
       animation: pulse 3s infinite ease-in-out;
       z-index: 0;
     }
 
-    /* Logo Xbilz */
+    /* Logo Xbilz dengan aura putih */
     .logo-img {
       position: relative;
       width: 130px;
@@ -55,9 +55,11 @@
       display: block;
       margin: 0 auto;
       border: 3px solid white;
-      box-shadow: 0 0 25px rgba(37,99,235,0.9),
-                  0 0 50px rgba(37,99,235,0.6);
-      animation: float 4s ease-in-out infinite;
+      box-shadow: 
+        0 0 25px rgba(255,255,255,0.9),
+        0 0 50px rgba(255,255,255,0.6),
+        0 0 75px rgba(255,255,255,0.4);
+      animation: float 4s ease-in-out infinite, glowPulse 4s ease-in-out infinite;
       z-index: 1;
     }
 
@@ -73,14 +75,26 @@
       }
     }
 
-    /* Animasi naik turun logo */
-    @keyframes float {
+    /* Efek glow logo berdenyut */
+    @keyframes glowPulse {
       0%, 100% {
-        transform: translateY(0);
+        box-shadow: 
+          0 0 20px rgba(255,255,255,0.8),
+          0 0 40px rgba(255,255,255,0.5),
+          0 0 60px rgba(255,255,255,0.3);
       }
       50% {
-        transform: translateY(-15px);
+        box-shadow: 
+          0 0 30px rgba(255,255,255,1),
+          0 0 60px rgba(255,255,255,0.8),
+          0 0 90px rgba(255,255,255,0.6);
       }
+    }
+
+    /* Animasi naik turun logo */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
     }
 
     h1 {
@@ -328,7 +342,7 @@
 
     createStars(150);
     animate();
-    setInterval(createShootingStar, 2000); // tiap 4 detik ada bintang jatuh
+    setInterval(createShootingStar, 2000);
   </script>
 </body>
-  </html>
+      </html>
