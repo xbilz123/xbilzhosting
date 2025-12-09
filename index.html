@@ -3,137 +3,113 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Warung robil dan rafa — Nasi Goreng & Mie Goreng Luar Angkasa</title>
+<title>Warung robil dan rafa — Luar Angkasa</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     font-family:Inter,system-ui,Arial;
     color:white;
-    overflow-x:hidden;
+    overflow:hidden;
     background:black;
-    position:relative;
   }
 
-  /* --- BINTANG KELAP-KELIP --- */
-  .twinkle-stars{
+  /* KELAP KELIP */
+  .twinkle{
     position:fixed;
     inset:0;
-    background:transparent;
-    overflow:hidden;
     z-index:-3;
   }
-  .twinkle-stars span{
+  .twinkle span{
     position:absolute;
     width:2px;
     height:2px;
     background:white;
     border-radius:50%;
-    animation:twinkle 2s infinite ease-in-out;
-    opacity:0.6;
+    opacity:0.4;
+    animation:tw 2s infinite ease-in-out;
   }
-  @keyframes twinkle{
+  @keyframes tw{
     0%,100%{opacity:0.2;transform:scale(1)}
     50%{opacity:1;transform:scale(1.8)}
   }
 
-  /* --- BINTANG BERJATUHAN --- */
-  .shooting-star{
+  /* SHOOTING STAR */
+  .shooting{
     position:fixed;
     width:3px;
     height:3px;
     background:white;
     border-radius:50%;
     filter:drop-shadow(0 0 6px white);
-    animation:shoot 3s linear infinite;
     z-index:-2;
+    animation:shoot 3s linear infinite;
   }
   @keyframes shoot{
-    0%{transform:translate(0,0) scale(1); opacity:1}
-    100%{transform:translate(-400px,800px) scale(0.5); opacity:0}
+    0%{transform:translate(0,0);opacity:1}
+    100%{transform:translate(-600px,900px);opacity:0}
   }
 
-  header{
-    padding:20px;
-    text-align:center;
-    backdrop-filter:blur(6px);
-  }
-  h1{font-size:32px; font-weight:700; text-shadow:0 0 12px rgba(255,255,255,0.65)}
-  p.sub{color:#cfd9ff; margin-top:6px}
+  header{text-align:center;padding:20px}
+  h1{font-size:32px;font-weight:700;text-shadow:0 0 14px #fff}
+  p.sub{color:#cfd9ff;margin-top:6px}
 
   .menu{
-    max-width:900px; margin:40px auto; padding:20px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:18px;
+    max-width:900px;margin:40px auto;padding:20px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;
   }
   .item{
-    background:rgba(255,255,255,0.08);
-    border-radius:14px;
-    padding:18px;
-    backdrop-filter:blur(6px);
-    box-shadow:0 0 18px rgba(0,0,0,0.4);
-    transition:0.2s;
+    background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;backdrop-filter:blur(6px);
   }
-  .item:hover{transform:translateY(-4px); box-shadow:0 0 24px rgba(0,0,0,0.55)}
-  .item h3{margin-bottom:10px}
-  .price{margin-top:10px; font-weight:700; color:#ffe082}
+  .price{margin-top:10px;font-weight:700;color:#ffe082}
 
-  footer{text-align:center;padding:20px;color:#ddd;margin-top:40px;font-size:13px}
+  footer{text-align:center;padding:20px;margin-top:40px;color:#aaa}
 </style>
 </head>
 <body>
-  <div class="stars"></div>
-  <div class="nebula"></div>
 
-  <header>
-    <h1>Warung robil dan rafa 🚀</h1>
-    <p class="sub">Kuliner Nusantara di bawah cahaya galaksi</p>
-  </header>
+<div class="twinkle" id="twinkle"></div>
+<div id="shootingContainer"></div>
 
-  <section class="menu">
-    <div class="item">
-      <h3>🍜 Mie Ayam pak no</h3>
-      <p>Mie ayam lembut dengan topping ayam manis gurih.</p>
-      <div class="price">Rp 15.000</div>
-    </div>
+<header>
+  <h1>Warung robil dan rafa 🚀</h1>
+  <p class="sub">Kuliner Nusantara di luar angkasa</p>
+</header>
 
-    <div class="item">
-      <h3>🍳 Nasi Goreng sukeri</h3>
-      <p>Nasi goreng pedas manis dengan aroma bintang jatuh.</p>
-      <div class="price">Rp 17.000</div>
-    </div>
+<section class="menu">
+  <div class="item"><h3>🍜 Mie Ayam pak no</h3><p>Mie ayam lembut.</p><div class="price">Rp 15.000</div></div>
+  <div class="item"><h3>🍳 Nasi Goreng sukeri</h3><p>Nasi goreng pedas.</p><div class="price">Rp 17.000</div></div>
+  <div class="item"><h3>🔥 Mie Goreng narmi</h3><p>Mie goreng spesial.</p><div class="price">Rp 14.000</div></div>
+  <div class="item"><h3>🧊 Es Teh Jumbo</h3><p>Segar.</p><div class="price">Rp 5.000</div></div>
+  <div class="item"><h3>🍊 Es Jeruk siswoyo</h3><p>Jeruk segar.</p><div class="price">Rp 6.000</div></div>
+  <div class="item"><h3>🍵 Teh Anget Aura</h3><p>Hangat.</p><div class="price">Rp 4.000</div></div>
+  <div class="item"><h3>🌌 Aneka Menu</h3><p>Cemilan dll.</p><div class="price">Mulai Rp 5.000</div></div>
+</section>
 
-    <div class="item">
-      <h3>🔥 Mie Goreng narmi</h3>
-      <p>Mie goreng spesial dengan bumbu meledak di mulut.</p>
-      <div class="price">Rp 14.000</div>
-    </div>
+<footer>© 2025 Warung robil dan rafa ⭐</footer>
 
-    <div class="item">
-      <h3>🧊 Es Teh Jumbo</h3>
-      <p>Segar seperti angin kosmik.</p>
-      <div class="price">Rp 5.000</div>
-    </div>
+<script>
+// BUAT BINTANG KELAP KELIP
+let tw = document.getElementById("twinkle");
+for(let i=0;i<170;i++){
+  let s=document.createElement("span");
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=(Math.random()*3)+"s";
+  tw.appendChild(s);
+}
 
-    <div class="item">
-      <h3>🍊 Es Jeruk siswoyo</h3>
-      <p>Jeruk peras segar yang menyala seperti bintang.</p>
-      <div class="price">Rp 6.000</div>
-    </div>
+// BUAT BINTANG JATUH TERUS MENERUS
+function spawnShoot(){
+  let st=document.createElement("div");
+  st.className="shooting";
+  st.style.left=Math.random()*100+"%";
+  st.style.top=Math.random()*40+"%";
+  st.style.animationDuration=(2+Math.random()*2)+"s";
+  document.getElementById("shootingContainer").appendChild(st);
+  setTimeout(()=>st.remove(),4000);
+}
+setInterval(spawnShoot,800);
+</script>
 
-    <div class="item">
-      <h3>🍵 Teh Anget Aura</h3>
-      <p>Hangat, menenangkan, vibes antar galaksi.</p>
-      <div class="price">Rp 4.000</div>
-    </div>
-
-    <div class="item">
-      <h3>🌌 Aneka Nebula Menu</h3>
-      <p>Snack kosmik lainnya: cireng, kentang goreng, dimsum, dll.</p>
-      <div class="price">Mulai Rp 5.000</div>
-    </div>
-  </section>
-
-  <footer>© 2025 Warung robil dan rafa — Dibuat dengan bumbu bintang ⭐</footer>
 </body>
 </html>
