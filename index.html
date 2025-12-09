@@ -11,38 +11,45 @@
     color:white;
     overflow-x:hidden;
     background:black;
+    position:relative;
   }
 
-  /* --- BACKGROUND NEBULA ANIMASI --- */
-  .nebula{
+  /* --- BINTANG KELAP-KELIP --- */
+  .twinkle-stars{
     position:fixed;
     inset:0;
-    background:radial-gradient(circle at 30% 50%, rgba(171,66,255,0.55), transparent 60%),
-               radial-gradient(circle at 70% 50%, rgba(0,180,255,0.45), transparent 60%),
-               radial-gradient(circle at 50% 80%, rgba(255,120,40,0.45), transparent 70%);
-    filter:blur(60px);
-    animation:pulse 8s ease-in-out infinite alternate;
-    z-index:-2;
-  }
-  @keyframes pulse{
-    0%{transform:scale(1) translateY(0px)}
-    50%{transform:scale(1.1) translateY(-10px)}
-    100%{transform:scale(1) translateY(0px)}
-  }
-
-  /* tambahan layer bintang bergerak */
-  .stars{
-    position:fixed;
-    inset:0;
-    background:url('https://uploads-ssl.webflow.com/643423dc5d1bd9e0ba7f620d/643424f7717bb2d2c772316e_stars-bg.png');
-    background-size:cover;
-    opacity:0.4;
-    animation: drift 60s linear infinite;
+    background:transparent;
+    overflow:hidden;
     z-index:-3;
   }
-  @keyframes drift{
-    from{transform:translateY(0)}
-    to{transform:translateY(-400px)}
+  .twinkle-stars span{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    animation:twinkle 2s infinite ease-in-out;
+    opacity:0.6;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0.2;transform:scale(1)}
+    50%{opacity:1;transform:scale(1.8)}
+  }
+
+  /* --- BINTANG BERJATUHAN --- */
+  .shooting-star{
+    position:fixed;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    filter:drop-shadow(0 0 6px white);
+    animation:shoot 3s linear infinite;
+    z-index:-2;
+  }
+  @keyframes shoot{
+    0%{transform:translate(0,0) scale(1); opacity:1}
+    100%{transform:translate(-400px,800px) scale(0.5); opacity:0}
   }
 
   header{
@@ -127,6 +134,6 @@
     </div>
   </section>
 
-  <footer>© 2025 Warung Nebula — Dibuat dengan bumbu bintang ⭐</footer>
+  <footer>© 2025 Warung robil dan rafa — Dibuat dengan bumbu bintang ⭐</footer>
 </body>
 </html>
