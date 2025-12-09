@@ -1,279 +1,232 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>VPS Store — Jual VPS Otomatis</title>
-  <meta name="description" content="Toko VPS otomatis: pilih paket, bayar, dan VPS dibuat otomatis lewat API.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Gallery — seperti YouTube (demo)</title>
   <style>
-    :root{--bg:#0b1220;--card:#081026;--accent:#45b3ff;--muted:#9fb0c2;--radius:12px;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial}
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#98a0b3; --accent:#ff4d6d;
+      --max-width:1200px;
+      color-scheme: dark;
+    }
     *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;background:linear-gradient(180deg,#041025 0%,#071a2a 100%);color:#eef6ff}
-    .container{max-width:1100px;margin:28px auto;padding:20px}
-    header{display:flex;justify-content:space-between;align-items:center}
-    .logo{font-weight:800;letter-spacing:0.4px}
-    nav a{color:var(--muted);margin-left:12px}
-    .hero{display:flex;gap:24px;align-items:center;margin-top:20px}
-    .hero .txt{flex:1}
-    .hero h1{margin:0;font-size:28px}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,#071028 0%, #071732 100%); color:#e6eef8}
+    .wrap{max-width:var(--max-width); margin:28px auto; padding:20px}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    .logo{font-weight:700; font-size:20px; display:flex;align-items:center;gap:10px}
+    .logo .dot{width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#ff6b6b,#ffb86b);display:inline-block}
+    .search{flex:1;display:flex}
+    .search input{flex:1;padding:10px 12px;border-radius:10px;border:0;background:#051428;color:inherit;outline:2px solid transparent}
+    .search button{margin-left:8px;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:white;cursor:pointer}
+    .controls{display:flex;gap:8px;align-items:center}
+    .control-btn{background:#08182a;padding:8px 12px;border-radius:10px;border:0;color:var(--muted);cursor:pointer}
 
-    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
-    .plan{background:var(--card);padding:18px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03)}
-    .plan h3{margin:0 0 8px}
-    .price{font-size:20px;font-weight:700;margin-bottom:12px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#02243f;font-weight:700;border:none;cursor:pointer}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;overflow:hidden;box-shadow:0 4px 18px rgba(2,6,23,0.6)}
+    .thumb{position:relative;height:140px;background:#021222}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .duration{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;font-size:12px}
+    .card .meta{padding:12px}
+    .title{font-weight:600;margin:0 0 6px 0;font-size:15px}
+    .desc{font-size:13px;color:var(--muted);margin:0}
 
-    /* modal */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45)}
-    .modal.active{display:flex}
-    .modal .panel{width:520px;background:#051428;padding:18px;border-radius:12px}
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.75));z-index:60}
+    .modal.show{display:flex}
+    .player{width:100%;max-width:980px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 10px 60px rgba(2,6,23,0.75)}
+    .player .top{display:flex;align-items:center;gap:12px;padding:12px}
+    .player video{width:100%;height:540px;background:black;display:block}
+    .side{padding:12px}
+    .close{background:transparent;border:0;color:var(--muted);font-weight:600;cursor:pointer}
 
-    .form-row{display:flex;gap:8px}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-    footer{margin-top:24px;color:var(--muted);font-size:13px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
 
-    @media (max-width:900px){.plans{grid-template-columns:1fr}.hero{flex-direction:column}.modal .panel{width:92%}}
+    /* responsive */
+    @media (max-width:720px){
+      .player video{height:260px}
+      .thumb{height:120px}
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="wrap">
     <header>
-      <div class="logo">VPS Store <span style="color:var(--accent);font-weight:700">— Otomatis</span></div>
-      <nav>
-        <a href="#plans">Paket</a>
-        <a href="#how">Cara Kerja</a>
-        <a href="#contact">Kontak</a>
-      </nav>
+      <div class="logo"><span class="dot"></span> VideoBox</div>
+      <div class="search">
+        <input id="q" placeholder="Cari video — contoh: tutorial, musik, vps" />
+        <button id="searchBtn">Cari</button>
+      </div>
+      <div class="controls">
+        <label class="control-btn">Kategori
+          <select id="categorySelect" style="margin-left:8px;background:transparent;border:none;color:var(--muted)">
+            <option value="all">Semua</option>
+            <option value="tutorial">Tutorial</option>
+            <option value="musik">Musik</option>
+            <option value="review">Review</option>
+          </select>
+        </label>
+        <label class="control-btn">Tambah
+          <input id="fileInput" type="file" accept="video/*" style="display:inline-block;margin-left:6px" />
+        </label>
+      </div>
     </header>
 
-    <section class="hero">
-      <div class="txt">
-        <h1>Jual VPS otomatis — dari order sampai provisioning</h1>
-        <p style="color:var(--muted)">Pelanggan pilih paket, bayar (Stripe/PayPal), dan VPS dibuat otomatis via API (DigitalOcean/Vultr/Cloud provider). Template ini sudah siap untuk dihubungkan ke backend.</p>
-      </div>
-      <div>
-        <button class="btn" onclick="scrollToPlans()">Lihat Paket</button>
-      </div>
-    </section>
-
-    <section id="plans" style="margin-top:18px">
-      <h2>Pilih Paket</h2>
-      <div class="plans">
-        <div class="plan">
-          <h3>VPS Starter</h3>
-          <div class="price">Rp 45.000 / bulan</div>
-          <ul style="color:var(--muted);padding-left:18px">
-            <li>1 vCPU • 1 GB RAM • 25 GB SSD</li>
-            <li>Lokasi: Singapore</li>
-            <li>Provisioning otomatis</li>
-          </ul>
-          <div style="margin-top:12px"><button class="btn" onclick="orderPlan('starter')">Pesan</button></div>
-        </div>
-
-        <div class="plan">
-          <h3>VPS Regular</h3>
-          <div class="price">Rp 95.000 / bulan</div>
-          <ul style="color:var(--muted);padding-left:18px">
-            <li>2 vCPU • 4 GB RAM • 80 GB SSD</li>
-            <li>Lokasi: Singapore</li>
-            <li>Provisioning otomatis + snapshot</li>
-          </ul>
-          <div style="margin-top:12px"><button class="btn" onclick="orderPlan('regular')">Pesan</button></div>
-        </div>
-
-        <div class="plan">
-          <h3>VPS Pro</h3>
-          <div class="price">Rp 195.000 / bulan</div>
-          <ul style="color:var(--muted);padding-left:18px">
-            <li>4 vCPU • 8 GB RAM • 160 GB SSD</li>
-            <li>Lokasi: Singapore / Tokyo</li>
-            <li>Otomatis + backups</li>
-          </ul>
-          <div style="margin-top:12px"><button class="btn" onclick="orderPlan('pro')">Pesan</button></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="how" style="margin-top:22px" class="card">
-      <h2>Cara Kerja</h2>
-      <ol style="color:var(--muted)">
-        <li>Pilih paket dan isi data order.</li>
-        <li>Sistem mengarahkan ke pembayaran (Stripe/PayPal).</li>
-        <li>Setelah pembayaran sukses, server memanggil API provider (mis. DigitalOcean) untuk membuat VPS.</li>
-        <li>Informasi login VPS dikirim ke email pelanggan dan muncul di dashboard.</li>
-      </ol>
-    </section>
-
-    <section id="contact" style="margin-top:22px">
-      <h2>Kontak & Setup</h2>
-      <p style="color:var(--muted)">Saya bisa bantu pasang: Stripe Checkout, webhook verifikasi, provisioning via DigitalOcean/Vultr, panel pelanggan sederhana, dan email otomatis.</p>
-      <p style="color:var(--muted)">Untuk demo cepat, pakai lingkungan development lalu hubungkan kunci API di backend (.env).</p>
-    </section>
-
-    <footer>
-      <div style="margin-top:18px;color:var(--muted)">© VPS Store • Template untuk penjualan VPS otomatis</div>
-    </footer>
+    <main>
+      <section id="grid" class="grid" aria-live="polite"></section>
+      <footer>Demo lokal — ganti data dengan API untuk produksi. Klik thumbnail untuk putar.</footer>
+    </main>
   </div>
 
-  <!-- ORDER MODAL -->
-  <div id="modal" class="modal">
-    <div class="panel">
-      <h3 id="modal-title">Order</h3>
-      <form id="order-form" onsubmit="submitOrder(event)">
-        <input type="hidden" id="plan-id">
-        <label>Nama</label>
-        <input id="cust-name" required>
-        <label>Email</label>
-        <input id="cust-email" type="email" required>
-        <label>Hostname (contoh: myserver)</label>
-        <input id="hostname" placeholder="myserver" required>
-        <label>Lokasi / Region</label>
-        <select id="region">
-          <option value="sgp1">Singapore</option>
-          <option value="tk1">Tokyo</option>
-        </select>
-        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-          <button type="button" class="btn" onclick="closeModal()" style="background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)">Batal</button>
-          <button type="submit" class="btn">Bayar & Provis</button>
-        </div>
-      </form>
-
-      <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
-      <div style="color:var(--muted);font-size:13px">Catatan: implementasi backend diperlukan. Contoh server (Node.js + Express) ada di bawah untuk membantu integrasi.</div>
+  <!-- Modal player -->
+  <div id="modal" class="modal" role="dialog" aria-hidden="true">
+    <div class="player" role="document">
+      <div class="top" style="justify-content:space-between;">
+        <div style="font-weight:700">Now playing</div>
+        <button id="closeBtn" class="close">✕ Tutup</button>
+      </div>
+      <video id="videoPlayer" controls playsinline preload="metadata"></video>
+      <div class="side">
+        <div id="videoTitle" style="font-weight:700;margin-bottom:6px"></div>
+        <div id="videoDesc" style="color:var(--muted);font-size:14px"></div>
+      </div>
     </div>
   </div>
 
   <script>
-    function scrollToPlans(){document.getElementById('plans').scrollIntoView({behavior:'smooth'})}
-    function orderPlan(id){
-      const labels = {starter:'VPS Starter',regular:'VPS Regular',pro:'VPS Pro'};
-      document.getElementById('modal-title').innerText = 'Pesan — ' + labels[id];
-      document.getElementById('plan-id').value = id;
-      document.getElementById('modal').classList.add('active');
-    }
-    function closeModal(){document.getElementById('modal').classList.remove('active')}
+    // Contoh data video. Ganti dengan panggilan API yang mengembalikan JSON di produksi.
+    const videos = [
+      {
+        id: 'v1',
+        title: 'Tutorial: Pasang VPS & Setup Web (contoh)',
+        desc: 'Langkah demi langkah pasang VPS, install web server, dan deploy aplikasi sederhana.',
+        category: 'tutorial',
+        src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+        poster: 'https://picsum.photos/seed/v1/800/450',
+        duration: '01:12'
+      },
+      {
+        id: 'v2',
+        title: 'Music: Chill Beats to Focus',
+        desc: 'Lo-fi chill beats untuk menemani kerja dan belajar.',
+        category: 'musik',
+        src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm',
+        poster: 'https://picsum.photos/seed/v2/800/450',
+        duration: '02:45'
+      },
+      {
+        id: 'v3',
+        title: 'Review: Server Hosting Murah 2025',
+        desc: 'Komparasi beberapa penyedia hosting dan tips memilih yang cocok.',
+        category: 'review',
+        src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+        poster: 'https://picsum.photos/seed/v3/800/450',
+        duration: '05:20'
+      }
+    ];
 
-    async function submitOrder(e){
-      e.preventDefault();
-      const data = {
-        plan: document.getElementById('plan-id').value,
-        name: document.getElementById('cust-name').value.trim(),
-        email: document.getElementById('cust-email').value.trim(),
-        hostname: document.getElementById('hostname').value.trim(),
-        region: document.getElementById('region').value,
-      };
+    const grid = document.getElementById('grid');
+    const modal = document.getElementById('modal');
+    const player = document.getElementById('videoPlayer');
+    const videoTitle = document.getElementById('videoTitle');
+    const videoDesc = document.getElementById('videoDesc');
 
-      // POST ke backend untuk membuat session pembayaran dan memulai provisioning setelah sukses
-      try{
-        const res = await fetch('/api/create-checkout-session', {
-          method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)
-        });
-        const j = await res.json();
-        if(j.url){
-          // redirect ke Stripe Checkout (atau halaman bayar)
-          window.location.href = j.url;
-        } else if(j.error){
-          alert('Gagal: ' + j.error);
-        } else {
-          alert('Respons tak terduga dari server');
-        }
-      } catch(err){
-        console.error(err);alert('Gagal menghubungi server');
+    function renderList(list){
+      grid.innerHTML = '';
+      if(list.length===0){ grid.innerHTML = '<div style="grid-column:1/-1;color:var(--muted);padding:20px;text-align:center">Tidak ada video</div>'; return; }
+      for(const v of list){
+        const card = document.createElement('article'); card.className='card';
+        card.innerHTML = `
+          <div class="thumb" data-id="${v.id}">
+            <img loading="lazy" src="${v.poster}" alt="${escapeHtml(v.title)} poster" />
+            <div class="duration">${v.duration}</div>
+          </div>
+          <div class="meta">
+            <h3 class="title">${escapeHtml(v.title)}</h3>
+            <p class="desc">${escapeHtml(v.desc)}</p>
+          </div>
+        `;
+        // click to open
+        card.querySelector('.thumb').addEventListener('click', ()=>openPlayer(v));
+        grid.appendChild(card);
       }
     }
-  </script>
 
-  <!-- BACKEND SAMPLE (README style) -->
-  <!--
-    Contoh backend (Node.js + Express) — simpan sebagai server.js
+    function openPlayer(video){
+      player.src = video.src;
+      player.poster = video.poster;
+      videoTitle.textContent = video.title;
+      videoDesc.textContent = video.desc;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      player.play().catch(()=>{});
+    }
 
-    1) Instal: npm install express stripe axios body-parser dotenv
-    2) Buat file .env dengan:
-       STRIPE_SECRET=sk_test_xxx
-       STRIPE_WEBHOOK_SECRET=whsec_xxx
-       DO_TOKEN=do_api_token_here
-       YOUR_DOMAIN=https://yourdomain.com
+    function closePlayer(){
+      player.pause();
+      player.removeAttribute('src');
+      player.load();
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+    }
 
-    3) Jalankan: node server.js
+    document.getElementById('closeBtn').addEventListener('click', closePlayer);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closePlayer(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closePlayer(); });
 
-    server.js (contoh):
--->
-  <pre style="display:none">
-// server.js (Node/Express sample)
-const express = require('express');
-const bodyParser = require('body-parser');
-const stripe = require('stripe')(process.env.STRIPE_SECRET);
-const axios = require('axios');
-require('dotenv').config();
+    // Search + filter
+    document.getElementById('searchBtn').addEventListener('click', applyFilters);
+    document.getElementById('q').addEventListener('keydown', (e)=>{ if(e.key==='Enter') applyFilters(); });
+    document.getElementById('categorySelect').addEventListener('change', applyFilters);
 
-const app = express();
-app.use(bodyParser.json());
-
-// simple price map (kamu bisa ambil dari DB)
-const PRICES = {starter:45000, regular:95000, pro:195000};
-
-app.post('/api/create-checkout-session', async (req,res)=>{
-  const {plan,name,email,hostname,region} = req.body;
-  if(!PRICES[plan]) return res.status(400).json({error:'Invalid plan'});
-
-  try{
-    // create a Stripe Checkout session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types:['card'],
-      mode:'payment',
-      line_items:[{
-        price_data:{
-          currency:'idr',
-          product_data:{name:`VPS - ${plan}`},
-          unit_amount: PRICES[plan]*100 // Stripe expects cents; be careful with currencies
-        },
-        quantity:1
-      }],
-      success_url: `${process.env.YOUR_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.YOUR_DOMAIN}/cancel`,
-      metadata:{plan, name, email, hostname, region}
-    });
-    res.json({url: session.url});
-  }catch(err){
-    console.error(err);res.status(500).json({error:err.message});
-  }
-});
-
-// webhook untuk menerima event dari Stripe (pembayaran sukses)
-app.post('/api/webhook', bodyParser.raw({type:'application/json'}), async (req,res)=>{
-  const sig = req.headers['stripe-signature'];
-  let event;
-  try{
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  }catch(err){ console.error('Webhook signature error', err.message); return res.status(400).send(`Webhook Error`); }
-
-  if(event.type === 'checkout.session.completed'){
-    const session = event.data.object;
-    // ambil metadata
-    const {plan, name, email, hostname, region} = session.metadata || {};
-    // provisioning: panggil provider (contoh: DigitalOcean)
-    try{
-      const doResp = await axios.post('https://api.digitalocean.com/v2/droplets', {
-        name: `${hostname}`,
-        region: region || 'sgp1',
-        size: plan === 'starter' ? 's-1vcpu-1gb' : (plan==='regular'?'s-2vcpu-4gb':'s-4vcpu-8gb'),
-        image: 'ubuntu-22-04-x64',
-        tags: ['vps-store']
-      },{
-        headers:{'Authorization':`Bearer ${process.env.DO_TOKEN}`, 'Content-Type':'application/json'}
+    function applyFilters(){
+      const q = (document.getElementById('q').value || '').trim().toLowerCase();
+      const cat = document.getElementById('categorySelect').value;
+      const filtered = videos.filter(v=>{
+        const matchesQ = q === '' || (v.title+ ' '+ v.desc).toLowerCase().includes(q);
+        const matchesCat = cat === 'all' || v.category === cat;
+        return matchesQ && matchesCat;
       });
+      renderList(filtered);
+    }
 
-      // simpan hasil provisioning ke DB / kirim email ke pelanggan
-      console.log('Droplet created:', doResp.data);
-      // TODO: kirim email / update dashboard
-    }catch(provErr){ console.error('Provisioning failed', provErr.response ? provErr.response.data : provErr.message); }
-  }
+    // Simple client-side "upload" to preview local files (no backend)
+    document.getElementById('fileInput').addEventListener('change', async (e)=>{
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+      // create object URL for preview
+      const url = URL.createObjectURL(file);
+      const newVideo = {
+        id: 'local-'+Date.now(),
+        title: file.name,
+        desc: 'Video lokal (preview)',
+        category: 'tutorial',
+        src: url,
+        poster: 'https://picsum.photos/seed/local/800/450',
+        duration: formatDuration(0)
+      };
+      videos.unshift(newVideo);
+      renderList(videos);
+      // optionally auto-open
+      openPlayer(newVideo);
+    });
 
-  res.json({received:true});
-});
+    // small helpers
+    function formatDuration(s){
+      const mm = Math.floor(s/60).toString().padStart(2,'0');
+      const ss = Math.floor(s%60).toString().padStart(2,'0');
+      return mm+':'+ss;
+    }
 
-app.listen(3000, ()=>console.log('Server running on port 3000'));
-  </pre>
+    function escapeHtml(text){
+      return text.replace(/[&<>"']/g, (m)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[m]);
+    }
 
+    // initial render
+    renderList(videos);
+
+    // Accessibility improvement: pause video when tab hidden
+    document.addEventListener('visibilitychange', ()=>{ if(document.hidden) player.pause(); });
+  </script>
 </body>
 </html>
