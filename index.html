@@ -1,348 +1,279 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XBILZ Payment Gateway</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VPS Store — Jual VPS Otomatis</title>
+  <meta name="description" content="Toko VPS otomatis: pilih paket, bayar, dan VPS dibuat otomatis lewat API.">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
-      background: #000;
-    }
+    :root{--bg:#0b1220;--card:#081026;--accent:#45b3ff;--muted:#9fb0c2;--radius:12px;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:linear-gradient(180deg,#041025 0%,#071a2a 100%);color:#eef6ff}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;justify-content:space-between;align-items:center}
+    .logo{font-weight:800;letter-spacing:0.4px}
+    nav a{color:var(--muted);margin-left:12px}
+    .hero{display:flex;gap:24px;align-items:center;margin-top:20px}
+    .hero .txt{flex:1}
+    .hero h1{margin:0;font-size:28px}
 
-    /* Background canvas */
-    #stars {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      background: radial-gradient(ellipse at bottom, #0d1d31 0%, #000000 100%);
-    }
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+    .plan{background:var(--card);padding:18px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03)}
+    .plan h3{margin:0 0 8px}
+    .price{font-size:20px;font-weight:700;margin-bottom:12px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#02243f;font-weight:700;border:none;cursor:pointer}
 
-    header {
-      padding: 30px 20px;
-    }
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45)}
+    .modal.active{display:flex}
+    .modal .panel{width:520px;background:#051428;padding:18px;border-radius:12px}
 
-    /* Logo wrapper dengan bulan glow */
-    .logo-wrapper {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
+    .form-row{display:flex;gap:8px}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    footer{margin-top:24px;color:var(--muted);font-size:13px}
 
-    .moon {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%);
-      animation: pulse 3s infinite ease-in-out;
-      z-index: 0;
-    }
-
-    /* Logo Xbilz dengan aura putih */
-    .logo-img {
-      position: relative;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      display: block;
-      margin: 0 auto;
-      border: 3px solid white;
-      box-shadow: 
-        0 0 25px rgba(255,255,255,0.9),
-        0 0 50px rgba(255,255,255,0.6),
-        0 0 75px rgba(255,255,255,0.4);
-      animation: float 4s ease-in-out infinite, glowPulse 4s ease-in-out infinite;
-      z-index: 1;
-    }
-
-    /* Animasi cahaya bulan */
-    @keyframes pulse {
-      0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.8;
-      }
-      50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 1;
-      }
-    }
-
-    /* Efek glow logo berdenyut */
-    @keyframes glowPulse {
-      0%, 100% {
-        box-shadow: 
-          0 0 20px rgba(255,255,255,0.8),
-          0 0 40px rgba(255,255,255,0.5),
-          0 0 60px rgba(255,255,255,0.3);
-      }
-      50% {
-        box-shadow: 
-          0 0 30px rgba(255,255,255,1),
-          0 0 60px rgba(255,255,255,0.8),
-          0 0 90px rgba(255,255,255,0.6);
-      }
-    }
-
-    /* Animasi naik turun logo */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
-    h1 {
-      font-size: 32px;
-      font-weight: bold;
-      background: linear-gradient(90deg, #3b82f6, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 16px;
-      margin-top: 5px;
-    }
-
-    /* Payment option */
-    .payment-option {
-      width: 85%;
-      margin: 15px auto;
-      padding: 18px;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: rgba(31,41,55,0.85);
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    }
-
-    .payment-option:hover {
-      transform: scale(1.02);
-      opacity: 0.95;
-    }
-
-    .payment-option img {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: white;
-      padding: 5px;
-    }
-
-    .payment-info { text-align: left; }
-    .payment-info h2 { margin: 0; font-size: 18px; color: #fff; }
-    .payment-info p { margin: 2px 0 0; font-size: 14px; color: #bbb; }
-
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: #1f2937;
-      padding: 25px;
-      border-radius: 12px;
-      width: 85%;
-      max-width: 400px;
-      color: white;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    }
-
-    .modal-content h2 { margin-bottom: 15px; color: #4fc3f7; }
-
-    .close {
-      position: absolute;
-      right: 15px; top: 10px;
-      font-size: 22px;
-      cursor: pointer;
-      color: #aaa;
-    }
-
-    .close:hover { color: white; }
-
-    .btn {
-      margin-top: 15px;
-      background: #2563eb;
-      padding: 12px 20px;
-      border-radius: 8px;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn:hover { background: #1d4ed8; }
-
-    .qrcode {
-      margin: 15px auto;
-      width: 200px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
-    }
+    @media (max-width:900px){.plans{grid-template-columns:1fr}.hero{flex-direction:column}.modal .panel{width:92%}}
   </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <div class="logo">VPS Store <span style="color:var(--accent);font-weight:700">— Otomatis</span></div>
+      <nav>
+        <a href="#plans">Paket</a>
+        <a href="#how">Cara Kerja</a>
+        <a href="#contact">Kontak</a>
+      </nav>
+    </header>
 
-  <!-- Background -->
-  <canvas id="stars"></canvas>
+    <section class="hero">
+      <div class="txt">
+        <h1>Jual VPS otomatis — dari order sampai provisioning</h1>
+        <p style="color:var(--muted)">Pelanggan pilih paket, bayar (Stripe/PayPal), dan VPS dibuat otomatis via API (DigitalOcean/Vultr/Cloud provider). Template ini sudah siap untuk dihubungkan ke backend.</p>
+      </div>
+      <div>
+        <button class="btn" onclick="scrollToPlans()">Lihat Paket</button>
+      </div>
+    </section>
 
-  <header>
-    <div class="logo-wrapper">
-      <div class="moon"></div>
-      <img src="https://files.catbox.moe/7imlg6.jpg" alt="XBILZ Logo" class="logo-img">
-    </div>
-    <h1>Secure Payment Gateway</h1>
-    <p>Choose your preferred payment method below</p>
-  </header>
+    <section id="plans" style="margin-top:18px">
+      <h2>Pilih Paket</h2>
+      <div class="plans">
+        <div class="plan">
+          <h3>VPS Starter</h3>
+          <div class="price">Rp 45.000 / bulan</div>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>1 vCPU • 1 GB RAM • 25 GB SSD</li>
+            <li>Lokasi: Singapore</li>
+            <li>Provisioning otomatis</li>
+          </ul>
+          <div style="margin-top:12px"><button class="btn" onclick="orderPlan('starter')">Pesan</button></div>
+        </div>
 
-  <!-- Payment Options -->
-  <div class="payment-option dana" onclick="openModal('dana')">
-    <img src="https://files.catbox.moe/os30im.jpg" alt="DANA">
-    <div class="payment-info">
-      <h2>DANA</h2>
-      <p>Instant transfer with zero fees</p>
-    </div>
+        <div class="plan">
+          <h3>VPS Regular</h3>
+          <div class="price">Rp 95.000 / bulan</div>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>2 vCPU • 4 GB RAM • 80 GB SSD</li>
+            <li>Lokasi: Singapore</li>
+            <li>Provisioning otomatis + snapshot</li>
+          </ul>
+          <div style="margin-top:12px"><button class="btn" onclick="orderPlan('regular')">Pesan</button></div>
+        </div>
+
+        <div class="plan">
+          <h3>VPS Pro</h3>
+          <div class="price">Rp 195.000 / bulan</div>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>4 vCPU • 8 GB RAM • 160 GB SSD</li>
+            <li>Lokasi: Singapore / Tokyo</li>
+            <li>Otomatis + backups</li>
+          </ul>
+          <div style="margin-top:12px"><button class="btn" onclick="orderPlan('pro')">Pesan</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" style="margin-top:22px" class="card">
+      <h2>Cara Kerja</h2>
+      <ol style="color:var(--muted)">
+        <li>Pilih paket dan isi data order.</li>
+        <li>Sistem mengarahkan ke pembayaran (Stripe/PayPal).</li>
+        <li>Setelah pembayaran sukses, server memanggil API provider (mis. DigitalOcean) untuk membuat VPS.</li>
+        <li>Informasi login VPS dikirim ke email pelanggan dan muncul di dashboard.</li>
+      </ol>
+    </section>
+
+    <section id="contact" style="margin-top:22px">
+      <h2>Kontak & Setup</h2>
+      <p style="color:var(--muted)">Saya bisa bantu pasang: Stripe Checkout, webhook verifikasi, provisioning via DigitalOcean/Vultr, panel pelanggan sederhana, dan email otomatis.</p>
+      <p style="color:var(--muted)">Untuk demo cepat, pakai lingkungan development lalu hubungkan kunci API di backend (.env).</p>
+    </section>
+
+    <footer>
+      <div style="margin-top:18px;color:var(--muted)">© VPS Store • Template untuk penjualan VPS otomatis</div>
+    </footer>
   </div>
 
-  <div class="payment-option qris" onclick="openModal('qris')">
-    <img src="https://files.catbox.moe/cewbnu.jpg" alt="QRIS">
-    <div class="payment-info">
-      <h2>QRIS</h2>
-      <p>Scan and pay with any app</p>
-    </div>
-  </div>
+  <!-- ORDER MODAL -->
+  <div id="modal" class="modal">
+    <div class="panel">
+      <h3 id="modal-title">Order</h3>
+      <form id="order-form" onsubmit="submitOrder(event)">
+        <input type="hidden" id="plan-id">
+        <label>Nama</label>
+        <input id="cust-name" required>
+        <label>Email</label>
+        <input id="cust-email" type="email" required>
+        <label>Hostname (contoh: myserver)</label>
+        <input id="hostname" placeholder="myserver" required>
+        <label>Lokasi / Region</label>
+        <select id="region">
+          <option value="sgp1">Singapore</option>
+          <option value="tk1">Tokyo</option>
+        </select>
+        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+          <button type="button" class="btn" onclick="closeModal()" style="background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)">Batal</button>
+          <button type="submit" class="btn">Bayar & Provis</button>
+        </div>
+      </form>
 
-  <!-- Modal -->
-  <div id="paymentModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <div id="modalBody"></div>
-      <button class="btn" onclick="closeModal()">Got It, Thanks!</button>
+      <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
+      <div style="color:var(--muted);font-size:13px">Catatan: implementasi backend diperlukan. Contoh server (Node.js + Express) ada di bawah untuk membantu integrasi.</div>
     </div>
   </div>
 
   <script>
-    // Payment modal
-    function openModal(type) {
-      const title = document.getElementById("modalTitle");
-      const body = document.getElementById("modalBody");
-      if(type === "dana") {
-        title.innerText = "Pay with DANA";
-        body.innerHTML = `
-          <p>Send payment to:</p>
-          <h3>085293788180</h3>
-          <p>Name: Istinandiroh</p>
-          <small>After payment, send receipt via WhatsApp</small>
-        `;
-      } else if(type === "qris") {
-        title.innerText = "Scan QRIS Code";
-        body.innerHTML = `
-          <img src="https://files.catbox.moe/u1aaiq.jpg" class="qrcode" alt="QRIS">
-          <p>Alternative payment number:</p>
-          <h3>085293788180</h3>
-          <p>(DANA)</p>
-        `;
-      }
-      document.getElementById("paymentModal").style.display = "flex";
+    function scrollToPlans(){document.getElementById('plans').scrollIntoView({behavior:'smooth'})}
+    function orderPlan(id){
+      const labels = {starter:'VPS Starter',regular:'VPS Regular',pro:'VPS Pro'};
+      document.getElementById('modal-title').innerText = 'Pesan — ' + labels[id];
+      document.getElementById('plan-id').value = id;
+      document.getElementById('modal').classList.add('active');
     }
-    function closeModal() {
-      document.getElementById("paymentModal").style.display = "none";
-    }
+    function closeModal(){document.getElementById('modal').classList.remove('active')}
 
-    // Stars background
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    let shootingStars = [];
+    async function submitOrder(e){
+      e.preventDefault();
+      const data = {
+        plan: document.getElementById('plan-id').value,
+        name: document.getElementById('cust-name').value.trim(),
+        email: document.getElementById('cust-email').value.trim(),
+        hostname: document.getElementById('hostname').value.trim(),
+        region: document.getElementById('region').value,
+      };
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    function createStars(count) {
-      stars = [];
-      for(let i=0; i<count; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.2,
-          alpha: Math.random(),
-          speed: Math.random() * 0.02
+      // POST ke backend untuk membuat session pembayaran dan memulai provisioning setelah sukses
+      try{
+        const res = await fetch('/api/create-checkout-session', {
+          method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)
         });
+        const j = await res.json();
+        if(j.url){
+          // redirect ke Stripe Checkout (atau halaman bayar)
+          window.location.href = j.url;
+        } else if(j.error){
+          alert('Gagal: ' + j.error);
+        } else {
+          alert('Respons tak terduga dari server');
+        }
+      } catch(err){
+        console.error(err);alert('Gagal menghubungi server');
       }
     }
-
-    function drawStars() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.fillStyle = "white";
-      stars.forEach(s => {
-        s.alpha += s.speed;
-        if(s.alpha <=0 || s.alpha>=1) s.speed *= -1;
-        ctx.globalAlpha = s.alpha;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI*2, true);
-        ctx.fill();
-      });
-      ctx.globalAlpha = 1;
-    }
-
-    function createShootingStar() {
-      shootingStars.push({
-        x: Math.random() * canvas.width,
-        y: 0,
-        len: Math.random() * 80 + 10,
-        speed: Math.random() * 8 + 5,
-        angle: Math.PI/4,
-        opacity: 1
-      });
-    }
-
-    function drawShootingStars() {
-      shootingStars.forEach((s, i) => {
-        ctx.strokeStyle = "rgba(255,255,255,"+s.opacity+")";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(s.x - s.len * Math.cos(s.angle), s.y - s.len * Math.sin(s.angle));
-        ctx.stroke();
-        s.x += s.speed * Math.cos(s.angle);
-        s.y += s.speed * Math.sin(s.angle);
-        s.opacity -= 0.01;
-        if(s.opacity <= 0) shootingStars.splice(i,1);
-      });
-    }
-
-    function animate() {
-      drawStars();
-      drawShootingStars();
-      requestAnimationFrame(animate);
-    }
-
-    createStars(150);
-    animate();
-    setInterval(createShootingStar, 2000);
   </script>
+
+  <!-- BACKEND SAMPLE (README style) -->
+  <!--
+    Contoh backend (Node.js + Express) — simpan sebagai server.js
+
+    1) Instal: npm install express stripe axios body-parser dotenv
+    2) Buat file .env dengan:
+       STRIPE_SECRET=sk_test_xxx
+       STRIPE_WEBHOOK_SECRET=whsec_xxx
+       DO_TOKEN=do_api_token_here
+       YOUR_DOMAIN=https://yourdomain.com
+
+    3) Jalankan: node server.js
+
+    server.js (contoh):
+-->
+  <pre style="display:none">
+// server.js (Node/Express sample)
+const express = require('express');
+const bodyParser = require('body-parser');
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const axios = require('axios');
+require('dotenv').config();
+
+const app = express();
+app.use(bodyParser.json());
+
+// simple price map (kamu bisa ambil dari DB)
+const PRICES = {starter:45000, regular:95000, pro:195000};
+
+app.post('/api/create-checkout-session', async (req,res)=>{
+  const {plan,name,email,hostname,region} = req.body;
+  if(!PRICES[plan]) return res.status(400).json({error:'Invalid plan'});
+
+  try{
+    // create a Stripe Checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types:['card'],
+      mode:'payment',
+      line_items:[{
+        price_data:{
+          currency:'idr',
+          product_data:{name:`VPS - ${plan}`},
+          unit_amount: PRICES[plan]*100 // Stripe expects cents; be careful with currencies
+        },
+        quantity:1
+      }],
+      success_url: `${process.env.YOUR_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.YOUR_DOMAIN}/cancel`,
+      metadata:{plan, name, email, hostname, region}
+    });
+    res.json({url: session.url});
+  }catch(err){
+    console.error(err);res.status(500).json({error:err.message});
+  }
+});
+
+// webhook untuk menerima event dari Stripe (pembayaran sukses)
+app.post('/api/webhook', bodyParser.raw({type:'application/json'}), async (req,res)=>{
+  const sig = req.headers['stripe-signature'];
+  let event;
+  try{
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  }catch(err){ console.error('Webhook signature error', err.message); return res.status(400).send(`Webhook Error`); }
+
+  if(event.type === 'checkout.session.completed'){
+    const session = event.data.object;
+    // ambil metadata
+    const {plan, name, email, hostname, region} = session.metadata || {};
+    // provisioning: panggil provider (contoh: DigitalOcean)
+    try{
+      const doResp = await axios.post('https://api.digitalocean.com/v2/droplets', {
+        name: `${hostname}`,
+        region: region || 'sgp1',
+        size: plan === 'starter' ? 's-1vcpu-1gb' : (plan==='regular'?'s-2vcpu-4gb':'s-4vcpu-8gb'),
+        image: 'ubuntu-22-04-x64',
+        tags: ['vps-store']
+      },{
+        headers:{'Authorization':`Bearer ${process.env.DO_TOKEN}`, 'Content-Type':'application/json'}
+      });
+
+      // simpan hasil provisioning ke DB / kirim email ke pelanggan
+      console.log('Droplet created:', doResp.data);
+      // TODO: kirim email / update dashboard
+    }catch(provErr){ console.error('Provisioning failed', provErr.response ? provErr.response.data : provErr.message); }
+  }
+
+  res.json({received:true});
+});
+
+app.listen(3000, ()=>console.log('Server running on port 3000'));
+  </pre>
+
 </body>
-      </html>
+</html>
