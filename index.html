@@ -1,232 +1,132 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Video Gallery — seperti YouTube (demo)</title>
-  <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#98a0b3; --accent:#ff4d6d;
-      --max-width:1200px;
-      color-scheme: dark;
-    }
-    *{box-sizing:border-box}
-    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,#071028 0%, #071732 100%); color:#e6eef8}
-    .wrap{max-width:var(--max-width); margin:28px auto; padding:20px}
-    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
-    .logo{font-weight:700; font-size:20px; display:flex;align-items:center;gap:10px}
-    .logo .dot{width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#ff6b6b,#ffb86b);display:inline-block}
-    .search{flex:1;display:flex}
-    .search input{flex:1;padding:10px 12px;border-radius:10px;border:0;background:#051428;color:inherit;outline:2px solid transparent}
-    .search button{margin-left:8px;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:white;cursor:pointer}
-    .controls{display:flex;gap:8px;align-items:center}
-    .control-btn{background:#08182a;padding:8px 12px;border-radius:10px;border:0;color:var(--muted);cursor:pointer}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Warung Nebula — Nasi Goreng & Mie Goreng Luar Angkasa</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:Inter,system-ui,Arial;
+    color:white;
+    overflow-x:hidden;
+    background:black;
+  }
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;overflow:hidden;box-shadow:0 4px 18px rgba(2,6,23,0.6)}
-    .thumb{position:relative;height:140px;background:#021222}
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-    .duration{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;font-size:12px}
-    .card .meta{padding:12px}
-    .title{font-weight:600;margin:0 0 6px 0;font-size:15px}
-    .desc{font-size:13px;color:var(--muted);margin:0}
+  /* --- BACKGROUND NEBULA ANIMASI --- */
+  .nebula{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at 30% 50%, rgba(171,66,255,0.55), transparent 60%),
+               radial-gradient(circle at 70% 50%, rgba(0,180,255,0.45), transparent 60%),
+               radial-gradient(circle at 50% 80%, rgba(255,120,40,0.45), transparent 70%);
+    filter:blur(60px);
+    animation:pulse 8s ease-in-out infinite alternate;
+    z-index:-2;
+  }
+  @keyframes pulse{
+    0%{transform:scale(1) translateY(0px)}
+    50%{transform:scale(1.1) translateY(-10px)}
+    100%{transform:scale(1) translateY(0px)}
+  }
 
-    /* Modal */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.75));z-index:60}
-    .modal.show{display:flex}
-    .player{width:100%;max-width:980px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 10px 60px rgba(2,6,23,0.75)}
-    .player .top{display:flex;align-items:center;gap:12px;padding:12px}
-    .player video{width:100%;height:540px;background:black;display:block}
-    .side{padding:12px}
-    .close{background:transparent;border:0;color:var(--muted);font-weight:600;cursor:pointer}
+  /* tambahan layer bintang bergerak */
+  .stars{
+    position:fixed;
+    inset:0;
+    background:url('https://uploads-ssl.webflow.com/643423dc5d1bd9e0ba7f620d/643424f7717bb2d2c772316e_stars-bg.png');
+    background-size:cover;
+    opacity:0.4;
+    animation: drift 60s linear infinite;
+    z-index:-3;
+  }
+  @keyframes drift{
+    from{transform:translateY(0)}
+    to{transform:translateY(-400px)}
+  }
 
-    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  header{
+    padding:20px;
+    text-align:center;
+    backdrop-filter:blur(6px);
+  }
+  h1{font-size:32px; font-weight:700; text-shadow:0 0 12px rgba(255,255,255,0.65)}
+  p.sub{color:#cfd9ff; margin-top:6px}
 
-    /* responsive */
-    @media (max-width:720px){
-      .player video{height:260px}
-      .thumb{height:120px}
-    }
-  </style>
+  .menu{
+    max-width:900px; margin:40px auto; padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+  }
+  .item{
+    background:rgba(255,255,255,0.08);
+    border-radius:14px;
+    padding:18px;
+    backdrop-filter:blur(6px);
+    box-shadow:0 0 18px rgba(0,0,0,0.4);
+    transition:0.2s;
+  }
+  .item:hover{transform:translateY(-4px); box-shadow:0 0 24px rgba(0,0,0,0.55)}
+  .item h3{margin-bottom:10px}
+  .price{margin-top:10px; font-weight:700; color:#ffe082}
+
+  footer{text-align:center;padding:20px;color:#ddd;margin-top:40px;font-size:13px}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="logo"><span class="dot"></span> VideoBox</div>
-      <div class="search">
-        <input id="q" placeholder="Cari video — contoh: tutorial, musik, vps" />
-        <button id="searchBtn">Cari</button>
-      </div>
-      <div class="controls">
-        <label class="control-btn">Kategori
-          <select id="categorySelect" style="margin-left:8px;background:transparent;border:none;color:var(--muted)">
-            <option value="all">Semua</option>
-            <option value="tutorial">Tutorial</option>
-            <option value="musik">Musik</option>
-            <option value="review">Review</option>
-          </select>
-        </label>
-        <label class="control-btn">Tambah
-          <input id="fileInput" type="file" accept="video/*" style="display:inline-block;margin-left:6px" />
-        </label>
-      </div>
-    </header>
+  <div class="stars"></div>
+  <div class="nebula"></div>
 
-    <main>
-      <section id="grid" class="grid" aria-live="polite"></section>
-      <footer>Demo lokal — ganti data dengan API untuk produksi. Klik thumbnail untuk putar.</footer>
-    </main>
-  </div>
+  <header>
+    <h1>Warung Nebula 🚀</h1>
+    <p class="sub">Kuliner Nusantara di bawah cahaya galaksi</p>
+  </header>
 
-  <!-- Modal player -->
-  <div id="modal" class="modal" role="dialog" aria-hidden="true">
-    <div class="player" role="document">
-      <div class="top" style="justify-content:space-between;">
-        <div style="font-weight:700">Now playing</div>
-        <button id="closeBtn" class="close">✕ Tutup</button>
-      </div>
-      <video id="videoPlayer" controls playsinline preload="metadata"></video>
-      <div class="side">
-        <div id="videoTitle" style="font-weight:700;margin-bottom:6px"></div>
-        <div id="videoDesc" style="color:var(--muted);font-size:14px"></div>
-      </div>
+  <section class="menu">
+    <div class="item">
+      <h3>🍜 Mie Ayam Nebula</h3>
+      <p>Mie ayam lembut dengan topping ayam manis gurih.</p>
+      <div class="price">Rp 15.000</div>
     </div>
-  </div>
 
-  <script>
-    // Contoh data video. Ganti dengan panggilan API yang mengembalikan JSON di produksi.
-    const videos = [
-      {
-        id: 'v1',
-        title: 'Tutorial: Pasang VPS & Setup Web (contoh)',
-        desc: 'Langkah demi langkah pasang VPS, install web server, dan deploy aplikasi sederhana.',
-        category: 'tutorial',
-        src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-        poster: 'https://picsum.photos/seed/v1/800/450',
-        duration: '01:12'
-      },
-      {
-        id: 'v2',
-        title: 'Music: Chill Beats to Focus',
-        desc: 'Lo-fi chill beats untuk menemani kerja dan belajar.',
-        category: 'musik',
-        src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm',
-        poster: 'https://picsum.photos/seed/v2/800/450',
-        duration: '02:45'
-      },
-      {
-        id: 'v3',
-        title: 'Review: Server Hosting Murah 2025',
-        desc: 'Komparasi beberapa penyedia hosting dan tips memilih yang cocok.',
-        category: 'review',
-        src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-        poster: 'https://picsum.photos/seed/v3/800/450',
-        duration: '05:20'
-      }
-    ];
+    <div class="item">
+      <h3>🍳 Nasi Goreng Meteor</h3>
+      <p>Nasi goreng pedas manis dengan aroma bintang jatuh.</p>
+      <div class="price">Rp 17.000</div>
+    </div>
 
-    const grid = document.getElementById('grid');
-    const modal = document.getElementById('modal');
-    const player = document.getElementById('videoPlayer');
-    const videoTitle = document.getElementById('videoTitle');
-    const videoDesc = document.getElementById('videoDesc');
+    <div class="item">
+      <h3>🔥 Mie Goreng Supernova</h3>
+      <p>Mie goreng spesial dengan bumbu meledak di mulut.</p>
+      <div class="price">Rp 14.000</div>
+    </div>
 
-    function renderList(list){
-      grid.innerHTML = '';
-      if(list.length===0){ grid.innerHTML = '<div style="grid-column:1/-1;color:var(--muted);padding:20px;text-align:center">Tidak ada video</div>'; return; }
-      for(const v of list){
-        const card = document.createElement('article'); card.className='card';
-        card.innerHTML = `
-          <div class="thumb" data-id="${v.id}">
-            <img loading="lazy" src="${v.poster}" alt="${escapeHtml(v.title)} poster" />
-            <div class="duration">${v.duration}</div>
-          </div>
-          <div class="meta">
-            <h3 class="title">${escapeHtml(v.title)}</h3>
-            <p class="desc">${escapeHtml(v.desc)}</p>
-          </div>
-        `;
-        // click to open
-        card.querySelector('.thumb').addEventListener('click', ()=>openPlayer(v));
-        grid.appendChild(card);
-      }
-    }
+    <div class="item">
+      <h3>🧊 Es Teh Jumbo</h3>
+      <p>Segar seperti angin kosmik.</p>
+      <div class="price">Rp 5.000</div>
+    </div>
 
-    function openPlayer(video){
-      player.src = video.src;
-      player.poster = video.poster;
-      videoTitle.textContent = video.title;
-      videoDesc.textContent = video.desc;
-      modal.classList.add('show');
-      modal.setAttribute('aria-hidden','false');
-      player.play().catch(()=>{});
-    }
+    <div class="item">
+      <h3>🍊 Es Jeruk Galactic</h3>
+      <p>Jeruk peras segar yang menyala seperti bintang.</p>
+      <div class="price">Rp 6.000</div>
+    </div>
 
-    function closePlayer(){
-      player.pause();
-      player.removeAttribute('src');
-      player.load();
-      modal.classList.remove('show');
-      modal.setAttribute('aria-hidden','true');
-    }
+    <div class="item">
+      <h3>🍵 Teh Anget Aura</h3>
+      <p>Hangat, menenangkan, vibes antar galaksi.</p>
+      <div class="price">Rp 4.000</div>
+    </div>
 
-    document.getElementById('closeBtn').addEventListener('click', closePlayer);
-    modal.addEventListener('click', (e)=>{ if(e.target===modal) closePlayer(); });
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closePlayer(); });
+    <div class="item">
+      <h3>🌌 Aneka Nebula Menu</h3>
+      <p>Snack kosmik lainnya: cireng, kentang goreng, dimsum, dll.</p>
+      <div class="price">Mulai Rp 5.000</div>
+    </div>
+  </section>
 
-    // Search + filter
-    document.getElementById('searchBtn').addEventListener('click', applyFilters);
-    document.getElementById('q').addEventListener('keydown', (e)=>{ if(e.key==='Enter') applyFilters(); });
-    document.getElementById('categorySelect').addEventListener('change', applyFilters);
-
-    function applyFilters(){
-      const q = (document.getElementById('q').value || '').trim().toLowerCase();
-      const cat = document.getElementById('categorySelect').value;
-      const filtered = videos.filter(v=>{
-        const matchesQ = q === '' || (v.title+ ' '+ v.desc).toLowerCase().includes(q);
-        const matchesCat = cat === 'all' || v.category === cat;
-        return matchesQ && matchesCat;
-      });
-      renderList(filtered);
-    }
-
-    // Simple client-side "upload" to preview local files (no backend)
-    document.getElementById('fileInput').addEventListener('change', async (e)=>{
-      const file = e.target.files && e.target.files[0];
-      if(!file) return;
-      // create object URL for preview
-      const url = URL.createObjectURL(file);
-      const newVideo = {
-        id: 'local-'+Date.now(),
-        title: file.name,
-        desc: 'Video lokal (preview)',
-        category: 'tutorial',
-        src: url,
-        poster: 'https://picsum.photos/seed/local/800/450',
-        duration: formatDuration(0)
-      };
-      videos.unshift(newVideo);
-      renderList(videos);
-      // optionally auto-open
-      openPlayer(newVideo);
-    });
-
-    // small helpers
-    function formatDuration(s){
-      const mm = Math.floor(s/60).toString().padStart(2,'0');
-      const ss = Math.floor(s%60).toString().padStart(2,'0');
-      return mm+':'+ss;
-    }
-
-    function escapeHtml(text){
-      return text.replace(/[&<>"']/g, (m)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[m]);
-    }
-
-    // initial render
-    renderList(videos);
-
-    // Accessibility improvement: pause video when tab hidden
-    document.addEventListener('visibilitychange', ()=>{ if(document.hidden) player.pause(); });
-  </script>
+  <footer>© 2025 Warung Nebula — Dibuat dengan bumbu bintang ⭐</footer>
 </body>
 </html>
