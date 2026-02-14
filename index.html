@@ -1,170 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Warung robil dan rafa — Luar Angkasa</title>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:Inter,system-ui,Arial;
-    color:white;
-    overflow-x:hidden; overflow-y:auto;
-    background:black;
-  }
-
-  /* KELAP KELIP */
-  .twinkle{
-    position:fixed;
-    inset:0;
-    z-index:-3;
-  }
-  .twinkle span{
-    position:absolute;
-    width:2px;
-    height:2px;
-    background:white;
-    border-radius:50%;
-    opacity:0.4;
-    animation:tw 2s infinite ease-in-out;
-  }
-  @keyframes tw{
-    0%,100%{opacity:0.2;transform:scale(1)}
-    50%{opacity:1;transform:scale(1.8)}
-  }
-
-  /* SHOOTING STAR */
-  .shooting{
-    position:fixed;
-    width:3px;
-    height:3px;
-    background:white;
-    border-radius:50%;
-    filter:drop-shadow(0 0 6px white);
-    z-index:-2;
-    animation:shoot 3s linear infinite;
-  }
-  @keyframes shoot{
-    0%{transform:translate(0,0);opacity:1}
-    100%{transform:translate(-600px,900px);opacity:0}
-  }
-
-  header{text-align:center;padding:20px}
-  h1{font-size:32px;font-weight:700;text-shadow:0 0 14px #fff}
-  p.sub{color:#cfd9ff;margin-top:6px}
-
-  .menu{
-    max-width:1000px;
-    margin:40px auto;
-    padding:20px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:22px;
-  }
-
-  .item{
-    background:rgba(255,255,255,0.08);
-    border-radius:14px;
-    padding:18px;
-    backdrop-filter:blur(6px);
-    text-align:center;
-  }
-
-  .item img{
-    width:100%;
-    border-radius:12px;
-    margin-bottom:10px;
-  }
-
-  .price{
-    margin-top:8px;
-    font-weight:700;
-    color:#ffe082;
-    font-size:18px;
-  }
-
-  footer{text-align:center;padding:20px;margin-top:40px;color:#aaa}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjualan Panel Pterodactyl - Hosting Server Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #00d4ff 0%, #090979 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #00ff88;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: url('https://via.placeholder.com/1920x1080/00d4ff/ffffff?text=Pterodactyl+Panel') no-repeat center/cover;
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #333;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .products {
+            padding: 50px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            text-align: center;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .product {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .product img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .contact {
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #090979 0%, #00d4ff 100%);
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input, textarea {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: box-shadow 0.3s ease;
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 10px rgba(0,255,136,0.5);
+            outline: none;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body>
-
-<div class="twinkle" id="twinkle"></div>
-<div id="shootingContainer"></div>
-
-<header>
-  <h1>Warung robil dan rafa 🚀</h1>
-  <p class="sub">Kuliner Nusantara di luar angkasa</p>
-</header>
-
-<section class="menu">
-
-  <div class="item">
-    <img src="https://files.catbox.moe/y3ovqq.jpeg" alt="Mie Ayam" />
-    <h3>🍜 Mie Ayam pak no</h3>
-    <div class="price">Rp 15.000</div>
-  </div>
-
-  <div class="item">
-    <img src="https://files.catbox.moe/eu5eop.jpeg
-
-" alt="Nasi Goreng" />
-    <h3>🍳 Nasi Goreng sukeri</h3>
-    <div class="price">Rp 17.000</div>
-  </div>
-
-  <div class="item">
-    <img src="https://files.catbox.moe/lkmmvb.jpg
-" alt="Mie Goreng" />
-    <h3>🔥 Mie Goreng narmi</h3>
-    <div class="price">Rp 14.000</div>
-  </div>
-
-  <div class="item">
-    <img src="https://i.ibb.co/jf3pV8C/esteh.jpg" alt="Es Teh Jumbo" />
-    <h3>🧊 Es Teh Jumbo</h3>
-    <div class="price">Rp 5.000</div>
-  </div>
-
-  <div class="item">
-    <img src="https://i.ibb.co/jG6qKqB/esjeruk.jpg" alt="Es Jeruk" />
-    <h3>🍊 Es Jeruk siswoyo</h3>
-    <div class="price">Rp 6.000</div>
-  </div>
-
-  <div class="item">
-    <img src="https://i.ibb.co/3vPxh0z/tehanget.jpg" alt="Teh Anget" />
-    <h3>🍵 Teh Anget Aura</h3>
-    <div class="price">Rp 4.000</div>
-  </div>
-
-</section>
-
-<footer>© 2025 Warung robil dan rafa ⭐</footer>
-
-<script>
-// BINTANG KELAP-KELIP
-let tw = document.getElementById("twinkle");
-for(let i=0;i<170;i++){
-  let s=document.createElement("span");
-  s.style.left=Math.random()*100+"%";
-  s.style.top=Math.random()*100+"%";
-  s.style.animationDelay=(Math.random()*3)+"s";
-  tw.appendChild(s);
-}
-
-// BINTANG JATUH
-function spawnShoot(){
-  let st=document.createElement("div");
-  st.className="shooting";
-  st.style.left=Math.random()*100+"%";
-  st.style.top=Math.random()*40+"%";
-  st.style.animationDuration=(2+Math.random()*2)+"s";
-  document.getElementById("shootingContainer").appendChild(st);
-  setTimeout(()=>st.remove(),4000);
-}
-setInterval(spawnShoot,800);
-</script>
-
+    <header>
+        <h2>Pterodactyl Hosting</h2>
+        <nav>
+            <a href="#hero">Beranda</a>
+            <a href="#products">Paket</a>
+            <a href="#contact">Kontak</a>
+        </nav>
+    </header>
+    
+    <section id="hero" class="hero">
+        <div>
+            <h1>Panel Pterodactyl Premium</h1>
+            <p>Kelola server game Anda dengan mudah. Hosting cepat, aman, dan scalable untuk Minecraft, Rust, dan lainnya.</p>
+            <button class="btn" onclick="scrollToProducts()">Lihat Paket</button>
+        </div>
+    </section>
+    
+    <section id="products" class="products">
+        <h2>Paket Hosting Kami</h2>
+        <div class="product-grid">
+            <div class="product">
+                <img src="https://via.placeholder.com/300x200/00ff88/333?text=Panel+Basic" alt="Panel Basic">
+                <h3>Paket Basic</h3>
+                <p>Harga: Rp 50.000/bulan</p>
+                <p>Deskripsi: Panel Pterodactyl untuk 1 server kecil, 2GB RAM, dukungan 24/7.</p>
+                <button class="btn">Pesan Sekarang</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/300x200/00d4ff/333?text=Panel+Pro" alt="Panel Pro">
+                <h3>Paket Pro</h3>
+                <p>Harga: Rp 150.000/bulan</p>
+                <p>Deskripsi: Panel untuk 5 server, 8GB RAM, backup otomatis, dan custom egg.</p>
+                <button class="btn">Pesan Sekarang</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/300x200/090979/fff?text=Panel+Enterprise" alt="Panel Enterprise">
+                <h3>Paket Enterprise</h3>
+                <p>Harga: Rp 500.000/bulan</p>
+                <p>Deskripsi: Panel unlimited server, 32GB RAM, DDoS protection, dan API akses penuh.</p>
+                <button class="btn">Pesan Sekarang</button>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact" class="contact">
+        <h2>Hubungi Kami</h2>
+        <form action="#" method="post">
+            <input type="text" placeholder="Nama Anda" required>
+            <input type="email" placeholder="Email Anda" required>
+            <textarea placeholder="Pesan Anda (misal: detail server)" rows="5" required></textarea>
+            <button class="btn" type="submit">Kirim Pesan</button>
+        </form>
+    </section>
+    
+    <footer>
+        <p>&copy; 2023 Pterodactyl Hosting. Dibuat dengan Grok. | Email: support@pterohost.com | Telp: 0812-3456-7890</p>
+    </footer>
+    
+    <script>
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
-
