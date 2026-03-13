@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love U Piya - Heart Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff6b9d, #c44569, #ff6b9d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
 
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .heart-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+
+        .letter {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .heart-path {
+            stroke: #ff1744;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawHeart 3s ease-in-out infinite;
+        }
+
+        @keyframes drawHeart {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .heart-container {
+                width: 400px;
+                height: 400px;
+            }
+            .letter {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container">
+        <!-- Path hati untuk panduan visual -->
+        <svg class="heart-path" viewBox="0 0 400 400">
+            <path d="M200,100 C140,0 0,100 0,200 C0,300 100,400 200,375 C300,400 400,300 400,200 C400,100 260,0 200,100 Z" />
+        </svg>
+        
+        <!-- Huruf-huruf yang akan bergerak membentuk hati -->
+        <div class="letter" data-target="i1">i</div>
+        <div class="letter" data-target="space1">&nbsp;</div>
+        <div class="letter" data-target="l1">l</div>
+        <div class="letter" data-target="l2">o</div>
+        <div class="letter" data-target="l3">v</div>
+        <div class="letter" data-target="l4">e</div>
+        <div class="letter" data-target="space2">&nbsp;</div>
+        <div class="letter" data-target="u1">u</div>
+        <div class="letter" data-target="space3">&nbsp;</div>
+        <div class="letter" data-target="p1">p</div>
+        <div class="letter" data-target="p2">i</div>
+        <div class="letter" data-target="p3">y</div>
+        <div class="letter" data-target="p4">a</div>
+    </div>
+
+    <script>
+        const letters = document.querySelectorAll('.letter');
+        const heartPositions = [
+            // Posisi huruf membentuk hati (x, y)
+            {x: 200, y: 120}, // i (tengah atas)
+            {x: 180, y: 140}, // space
+            {x: 170, y: 160}, // l
+            {x: 190, y: 170}, // o
+            {x: 210, y: 170}, // v
+            {x: 230, y: 160}, // e
+            {x: 195, y: 190}, // space
+            {x: 205, y: 190}, // u
+            {x: 175, y: 220}, // space
+            {x: 155, y: 240}, // p
+            {x: 170, y: 260}, // i
+            {x: 185, y: 275}, // y
+            {x: 200, y: 290}  // a
+        ];
+
+        // Mulai animasi masuk
+        letters.forEach((letter, index) => {
+            letter.style.left = '50%';
+            letter.style.top = '50%';
+            letter.style.opacity = '0';
+            
+            // Delay masuk bertahap
+            setTimeout(() => {
+                animateToHeart(letter, index);
+            }, index * 150);
+        });
+
+        function animateToHeart(letter, index) {
+            const targetPos = heartPositions[index];
+            
+            // Animasi bergerak ke posisi hati
+            letter.animate([
+                {
+                    left: '50%',
+                    top: '50%',
+                    opacity: 0,
+                    transform: 'scale(0.5) rotate(180deg)'
+                },
+                {
+                    left: targetPos.x + 'px',
+                    top: targetPos.y + 'px',
+                    opacity: 1,
+                    transform: 'scale(1) rotate(0deg)'
+                }
+            ], {
+                duration: 1000 + (index * 50),
+                easing: 'easeOutBack',
+                fill: 'forwards'
+            });
+
+            // Hover effect
+            letter.addEventListener('mouseenter', () => {
+                letter.style.transform = 'scale(1.3) rotate(10deg)';
+                letter.style.color = '#ffd700';
+                createHeartParticles(letter);
+            });
+
+            letter.addEventListener('mouseleave', () => {
+                letter.style.transform = 'scale(1) rotate(0deg)';
+                letter.style.color = '#fff';
+            });
+        }
+
+        // Efek partikel hati saat hover
+        function createHeartParticles(element) {
+            for(let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.innerHTML = '💖';
+                    particle.style.position = 'absolute';
+                    particle.style.left = element.offsetLeft + 'px';
+                    particle.style.top = element.offsetTop + 'px';
+                    particle.style.fontSize = '20px';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.zIndex = '1000';
+                    document.body.appendChild(particle);
+
+                    particle.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { transform: `translate(${Math.random()*100-50}px, ${Math.random()*-100-50}px) scale(0)`, opacity: 0 }
+                    ], {
+                        duration: 1000,
+                        easing: 'easeOutQuad'
+                    }).onfinish = () => particle.remove();
+                }, i * 100);
+            }
+        }
+
+        // Animasi berkedip untuk menarik perhatian
+        setInterval(() => {
+            letters[Math.floor(Math.random() * letters.length)].style.textShadow = 
+                '0 0 20px #ff1744, 0 0 30px #ff1744';
+            setTimeout(() => {
+                letters.forEach(l => l.style.textShadow = '2px 2px 4px rgba(0,0,0,0.5)');
+            }, 300);
+        }, 2000);
+    </script>
+</body>
+  </html>
