@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Love Floating Text</title>
+<title>Love Text</title>
 
 <style>
 
@@ -10,59 +10,23 @@ body{
 margin:0;
 overflow:hidden;
 background:black;
-font-family:Arial, sans-serif;
+font-family:Arial;
 }
 
-/* container */
-.container{
-position:fixed;
-width:100%;
-height:100%;
-overflow:hidden;
+canvas{
+display:block;
 }
 
-/* text kecil */
-.text{
-position:absolute;
-color:white;
-opacity:0.5;
-white-space:nowrap;
-animation:float linear infinite;
-}
-
-/* animasi smooth dari bawah */
-@keyframes float{
-
-0%{
-transform:translateY(110vh) scale(0.6);
-opacity:0;
-}
-
-20%{
-opacity:0.4;
-}
-
-80%{
-opacity:0.7;
-}
-
-100%{
-transform:translateY(-20vh) scale(1.2);
-opacity:0;
-}
-
-}
-
-/* text besar di tengah */
+/* teks tengah */
 .big{
-position:fixed;
+position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-font-size:60px;
 color:white;
-letter-spacing:8px;
-text-align:center;
+font-size:70px;
+letter-spacing:10px;
+white-space:nowrap;
 pointer-events:none;
 }
 
@@ -71,41 +35,64 @@ pointer-events:none;
 
 <body>
 
-<div class="container" id="container"></div>
-
+<canvas id="canvas"></canvas>
 <div class="big">I LOVE U DINDA</div>
 
 <script>
 
-const container = document.getElementById("container");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-function createText(){
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-let span = document.createElement("span");
+let texts=[];
 
-span.className="text";
-span.innerText="I LOVE U DINDA";
+/* buat banyak teks langsung saat load */
+for(let i=0;i<80;i++){
 
-/* posisi random */
-span.style.left=Math.random()*100+"vw";
-
-/* ukuran random */
-span.style.fontSize=(12+Math.random()*35)+"px";
-
-/* kecepatan smooth */
-span.style.animationDuration=(8+Math.random()*6)+"s";
-
-container.appendChild(span);
-
-/* hapus setelah animasi selesai */
-setTimeout(()=>{
-span.remove();
-},14000);
+texts.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:12+Math.random()*35,
+speed:1+Math.random()*1.5,
+opacity:0.3+Math.random()*0.6
+});
 
 }
 
-/* muncul terus dari bawah */
-setInterval(createText,500);
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.textAlign="center";
+ctx.fillStyle="white";
+
+for(let i=0;i<texts.length;i++){
+
+let t=texts[i];
+
+ctx.globalAlpha=t.opacity;
+ctx.font=t.size+"px Arial";
+
+ctx.fillText("I LOVE U DINDA",t.x,t.y);
+
+/* gerakan ke atas */
+t.y -= t.speed;
+
+/* kalau sudah keluar atas muncul lagi di bawah */
+if(t.y < -50){
+t.y = canvas.height + 50;
+t.x = Math.random()*canvas.width;
+}
+
+}
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
 
 </script>
 
