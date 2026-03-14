@@ -58,7 +58,7 @@ stars.push({
 x: Math.random()*canvas.width,
 y: Math.random()*canvas.height,
 size: Math.random()*2,
-speed: Math.random()*0.5
+speed: Math.random()*0.4
 });
 }
 
@@ -82,15 +82,14 @@ s.x = Math.random()*canvas.width;
 
 }
 
-/* DRAW LOOP */
 function draw(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-/* draw stars first */
+/* gambar bintang */
 drawStars();
 
-/* heart style */
+/* style heart */
 ctx.fillStyle="#ff6fa5";
 ctx.font="16px monospace";
 ctx.textAlign="center";
@@ -103,7 +102,8 @@ let centerY = canvas.height/2;
 
 for(let i=0;i<heart.length;i++){
 
-let p = heart[(i+offset)%heart.length];
+let index = Math.floor((i+offset)%heart.length);
+let p = heart[index];
 
 let px = centerX + p.x*17;
 let py = centerY - p.y*17;
@@ -114,7 +114,8 @@ ctx.fillText(text,px,py);
 
 }
 
-offset++;
+/* gerakan lebih smooth */
+offset += 0.35;
 
 requestAnimationFrame(draw);
 
