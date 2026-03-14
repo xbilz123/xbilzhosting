@@ -10,7 +10,7 @@ body{
 margin:0;
 overflow:hidden;
 background:black;
-font-family:Arial;
+font-family:Arial, Helvetica, sans-serif;
 }
 
 canvas{
@@ -23,10 +23,11 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 color:white;
-font-size:70px;
-letter-spacing:10px;
+font-size:55px;
+font-weight:300;
+letter-spacing:14px;
 white-space:nowrap;
-text-shadow:0 0 10px #fff, 0 0 20px #fff, 0 0 40px #ff6fa5;
+text-shadow:0 0 10px #fff,0 0 30px #ff6fa5;
 pointer-events:none;
 }
 
@@ -36,7 +37,7 @@ pointer-events:none;
 <body>
 
 <canvas id="canvas"></canvas>
-<div class="big">I LOVE U VIA</div>
+<div class="big">I LOVE U DINDA</div>
 
 <script>
 
@@ -48,15 +49,14 @@ canvas.height = window.innerHeight;
 
 let texts=[];
 
-/* isi layar saat load */
-for(let i=0;i<80;i++){
+for(let i=0;i<90;i++){
 
 texts.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-size:12+Math.random()*35,
-speed:1+Math.random()*1.5,
-opacity:0.3+Math.random()*0.6
+size:8+Math.random()*18,   // lebih kecil
+speed:1.2+Math.random()*1.4,
+opacity:0.2+Math.random()*0.6
 });
 
 }
@@ -66,10 +66,8 @@ function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
 ctx.textAlign="center";
-
-/* glow effect */
 ctx.shadowColor="#ff6fa5";
-ctx.shadowBlur=15;
+ctx.shadowBlur=12;
 
 for(let i=0;i<texts.length;i++){
 
@@ -79,7 +77,7 @@ ctx.globalAlpha=t.opacity;
 ctx.font=t.size+"px Arial";
 ctx.fillStyle="white";
 
-ctx.fillText("i love u via",t.x,t.y);
+ctx.fillText("I LOVE U DINDA",t.x,t.y);
 
 t.y -= t.speed;
 
