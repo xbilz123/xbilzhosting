@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Love Text Glow</title>
+<title>Love Text</title>
 
 <style>
 body{
@@ -35,28 +35,27 @@ let offset = 0;
 
 let heart = [];
 
-/* buat titik love */
+/* buat bentuk love */
 for(let t=0; t<Math.PI*2; t+=0.01){
 
-let x = 16*Math.pow(Math.sin(t),3);
-let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+let x = (16*Math.pow(Math.sin(t),3)) / 18;
+let y = (13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)) / 18;
 
 heart.push({x,y});
 
 }
 
-/* posisi tengah dan ukuran */
-let centerX = canvas.width/2;
-let centerY = canvas.height/2;
-let scale = 30;
+/* ukuran love */
+let scale = 320;
 
 function draw(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-/* warna dan glow */
 ctx.fillStyle="#ff6fa5";
 ctx.font="16px monospace";
+
+/* glow tipis */
 ctx.shadowColor="#ff6fa5";
 ctx.shadowBlur=8;
 
@@ -64,8 +63,8 @@ for(let i=0;i<heart.length;i++){
 
 let p = heart[(i+offset)%heart.length];
 
-let px = centerX + p.x*scale;
-let py = centerY - p.y*scale;
+let px = canvas.width/2 + p.x*scale;
+let py = canvas.height/2 - p.y*scale;
 
 if(i%10===0){
 ctx.fillText(text,px,py);
