@@ -2,59 +2,79 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Love Text Heart</title>
+<title>3D Love Heart</title>
+
 <style>
 body{
-    margin:0;
-    background:black;
-    overflow:hidden;
-    font-family: monospace;
+margin:0;
+background:black;
+overflow:hidden;
+font-family:monospace;
 }
+
 canvas{
-    display:block;
+display:block;
 }
 </style>
 </head>
+
 <body>
 
-<canvas id="c"></canvas>
+<canvas id="canvas"></canvas>
 
 <script>
-const canvas = document.getElementById("c");
+
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let angle = 0;
 const text = "i love u piya ";
-const chars = text.split("");
 
 let points = [];
 
-for (let t = 0; t < Math.PI * 2; t += 0.02) {
-    let x = 16 * Math.pow(Math.sin(t), 3);
-    let y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+for (let t = 0; t < Math.PI * 2; t += 0.05){
 
-    points.push({
-        x: canvas.width/2 + x * 20,
-        y: canvas.height/2 - y * 20
-    });
+let x = 16 * Math.pow(Math.sin(t),3);
+let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+
+points.push({x:x,y:y});
+
 }
 
 function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.fillStyle = "#ff6b9c";
-    ctx.font = "16px monospace";
+ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    points.forEach((p,i)=>{
-        ctx.fillText(chars[i % chars.length], p.x, p.y);
-    });
+ctx.fillStyle="#ff7aa8";
+ctx.font="18px monospace";
 
-    requestAnimationFrame(draw);
+points.forEach((p,i)=>{
+
+let scale = 15;
+
+let x = p.x * scale;
+let y = p.y * scale;
+
+let z = Math.sin(angle + i*0.1) * 50;
+
+let px = canvas.width/2 + x;
+let py = canvas.height/2 - y + z;
+
+ctx.fillText(text,px,py);
+
+});
+
+angle += 0.02;
+
+requestAnimationFrame(draw);
+
 }
 
 draw();
+
 </script>
 
 </body>
