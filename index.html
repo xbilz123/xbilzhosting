@@ -9,7 +9,7 @@
 body{
 margin:0;
 overflow:hidden;
-background:black;
+background:radial-gradient(circle at center,#050510,#000);
 font-family:Arial;
 }
 
@@ -17,7 +17,6 @@ canvas{
 display:block;
 }
 
-/* teks tengah */
 .big{
 position:absolute;
 top:50%;
@@ -27,7 +26,28 @@ color:white;
 font-size:70px;
 letter-spacing:10px;
 white-space:nowrap;
+text-shadow:
+0 0 10px #fff,
+0 0 20px #ff6fa5,
+0 0 40px #ff6fa5,
+0 0 80px #ff2a6d;
+animation:glow 3s ease-in-out infinite alternate;
 pointer-events:none;
+}
+
+@keyframes glow{
+from{
+text-shadow:
+0 0 10px #fff,
+0 0 20px #ff6fa5,
+0 0 40px #ff6fa5;
+}
+to{
+text-shadow:
+0 0 20px #fff,
+0 0 40px #ff6fa5,
+0 0 80px #ff2a6d;
+}
 }
 
 </style>
@@ -36,7 +56,7 @@ pointer-events:none;
 <body>
 
 <canvas id="canvas"></canvas>
-<div class="big">I LOVE U DINDA</div>
+<div class="big">I LOVE U PIYA</div>
 
 <script>
 
@@ -48,17 +68,14 @@ canvas.height = window.innerHeight;
 
 let texts=[];
 
-/* buat banyak teks langsung saat load */
-for(let i=0;i<80;i++){
-
+for(let i=0;i<100;i++){
 texts.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-size:12+Math.random()*35,
-speed:1+Math.random()*1.5,
-opacity:0.3+Math.random()*0.6
+size:12+Math.random()*40,
+speed:1+Math.random()*1.8,
+opacity:0.2+Math.random()*0.7
 });
-
 }
 
 function draw(){
@@ -66,7 +83,8 @@ function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
 ctx.textAlign="center";
-ctx.fillStyle="white";
+ctx.shadowColor="#ff2a6d";
+ctx.shadowBlur=20;
 
 for(let i=0;i<texts.length;i++){
 
@@ -74,13 +92,12 @@ let t=texts[i];
 
 ctx.globalAlpha=t.opacity;
 ctx.font=t.size+"px Arial";
+ctx.fillStyle="white";
 
 ctx.fillText("I LOVE U DINDA",t.x,t.y);
 
-/* gerakan ke atas */
 t.y -= t.speed;
 
-/* kalau sudah keluar atas muncul lagi di bawah */
 if(t.y < -50){
 t.y = canvas.height + 50;
 t.x = Math.random()*canvas.width;
