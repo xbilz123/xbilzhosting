@@ -17,28 +17,27 @@ display:block;
 </head>
 <body>
 
-<canvas id="c"></canvas>
+<canvas id="canvas"></canvas>
 
 <script>
 
-const canvas = document.getElementById("c");
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const text = "i love u piya";
-let move = 0;
+let offset = 0;
 
-let points = [];
+let heart = [];
 
-// buat titik hati sangat banyak supaya penuh
-for(let t=0;t<Math.PI*2;t+=0.005){
+for(let t=0; t<Math.PI*2; t+=0.01){
 
 let x = 16*Math.pow(Math.sin(t),3);
 let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
 
-points.push({x,y});
+heart.push({x,y});
 
 }
 
@@ -49,18 +48,20 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.fillStyle="#ff6fa5";
 ctx.font="14px monospace";
 
-for(let i=0;i<points.length;i+=12){
+for(let i=0;i<heart.length;i++){
 
-let p = points[(i+move)%points.length];
+let p = heart[(i+offset)%heart.length];
 
-let px = canvas.width/2 + p.x*15;
-let py = canvas.height/2 - p.y*15;
+let px = canvas.width/2 + p.x*18;
+let py = canvas.height/2 - p.y*18;
 
+if(i%10===0){
 ctx.fillText(text,px,py);
+}
 
 }
 
-move++;
+offset++;
 
 requestAnimationFrame(draw);
 
