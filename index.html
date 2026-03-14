@@ -36,9 +36,7 @@ resize();
 window.addEventListener("resize", resize);
 
 const text = "i love u piya";
-
 let offset = 0;
-let beat = 0;
 
 let heart = [];
 
@@ -55,27 +53,22 @@ function draw(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-beat += 0.02;
-let pulse = Math.sin(beat)*2;
-
-let hue = (offset*2)%360;
-
-ctx.fillStyle = `hsl(${hue},100%,60%)`;
+ctx.fillStyle="#ff6fa5";
 ctx.font="16px monospace";
 ctx.textAlign="center";
 
-ctx.shadowColor = `hsl(${hue},100%,60%)`;
-ctx.shadowBlur = 15;
+ctx.shadowColor="#ff6fa5";
+ctx.shadowBlur=10;
 
 let centerX = canvas.width/2;
 let centerY = canvas.height/2;
 
 for(let i=0;i<heart.length;i++){
 
-let p = heart[Math.floor((i+offset)%heart.length)];
+let p = heart[(i+offset)%heart.length];
 
-let px = centerX + p.x*(17+pulse);
-let py = centerY - p.y*(17+pulse);
+let px = centerX + p.x*17;
+let py = centerY - p.y*17;
 
 if(i%10===0){
 ctx.fillText(text,px,py);
@@ -83,7 +76,7 @@ ctx.fillText(text,px,py);
 
 }
 
-offset += 0.3;
+offset++;
 
 requestAnimationFrame(draw);
 
