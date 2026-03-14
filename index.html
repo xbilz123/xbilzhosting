@@ -9,7 +9,7 @@
 body{
 margin:0;
 overflow:hidden;
-background:radial-gradient(circle at center,#050510,#000);
+background:black;
 font-family:Arial;
 }
 
@@ -26,28 +26,8 @@ color:white;
 font-size:70px;
 letter-spacing:10px;
 white-space:nowrap;
-text-shadow:
-0 0 10px #fff,
-0 0 20px #ff6fa5,
-0 0 40px #ff6fa5,
-0 0 80px #ff2a6d;
-animation:glow 3s ease-in-out infinite alternate;
+text-shadow:0 0 10px #fff, 0 0 20px #fff, 0 0 40px #ff6fa5;
 pointer-events:none;
-}
-
-@keyframes glow{
-from{
-text-shadow:
-0 0 10px #fff,
-0 0 20px #ff6fa5,
-0 0 40px #ff6fa5;
-}
-to{
-text-shadow:
-0 0 20px #fff,
-0 0 40px #ff6fa5,
-0 0 80px #ff2a6d;
-}
 }
 
 </style>
@@ -56,7 +36,7 @@ text-shadow:
 <body>
 
 <canvas id="canvas"></canvas>
-<div class="big">I LOVE U PIYA</div>
+<div class="big">I LOVE U DINDA</div>
 
 <script>
 
@@ -68,14 +48,17 @@ canvas.height = window.innerHeight;
 
 let texts=[];
 
-for(let i=0;i<100;i++){
+/* isi layar saat load */
+for(let i=0;i<80;i++){
+
 texts.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-size:12+Math.random()*40,
-speed:1+Math.random()*1.8,
-opacity:0.2+Math.random()*0.7
+size:12+Math.random()*35,
+speed:1+Math.random()*1.5,
+opacity:0.3+Math.random()*0.6
 });
+
 }
 
 function draw(){
@@ -83,8 +66,10 @@ function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
 ctx.textAlign="center";
-ctx.shadowColor="#ff2a6d";
-ctx.shadowBlur=20;
+
+/* glow effect */
+ctx.shadowColor="#ff6fa5";
+ctx.shadowBlur=15;
 
 for(let i=0;i<texts.length;i++){
 
