@@ -22,10 +22,28 @@ display:block;
 
 <canvas id="canvas"></canvas>
 
+<!-- musik -->
+<audio id="music" autoplay loop muted>
+<source src="https://files.catbox.moe/4f8q2o.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const music = document.getElementById("music");
+
+/* coba aktifkan suara */
+window.addEventListener("load", () => {
+music.muted = false;
+music.play().catch(()=>{});
+});
+
+/* kalau user sentuh layar, musik pasti play */
+document.addEventListener("click", () => {
+music.muted = false;
+music.play();
+});
 
 function resize(){
 canvas.width = window.innerWidth;
@@ -35,7 +53,6 @@ canvas.height = window.innerHeight;
 resize();
 window.addEventListener("resize", resize);
 
-/* TEXT HEART */
 const text = "i love u piya";
 let offset = 0;
 
@@ -50,46 +67,10 @@ heart.push({x,y});
 
 }
 
-/* STAR BACKGROUND */
-let stars = [];
-
-for(let i=0;i<200;i++){
-stars.push({
-x: Math.random()*canvas.width,
-y: Math.random()*canvas.height,
-size: Math.random()*2,
-speed: Math.random()*0.4
-});
-}
-
-function drawStars(){
-
-for(let s of stars){
-
-ctx.fillStyle="white";
-ctx.beginPath();
-ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
-ctx.fill();
-
-s.y += s.speed;
-
-if(s.y > canvas.height){
-s.y = 0;
-s.x = Math.random()*canvas.width;
-}
-
-}
-
-}
-
 function draw(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-/* gambar bintang */
-drawStars();
-
-/* style heart */
 ctx.fillStyle="#ff6fa5";
 ctx.font="16px monospace";
 ctx.textAlign="center";
@@ -102,8 +83,7 @@ let centerY = canvas.height/2;
 
 for(let i=0;i<heart.length;i++){
 
-let index = Math.floor((i+offset)%heart.length);
-let p = heart[index];
+let p = heart[(i+offset)%heart.length];
 
 let px = centerX + p.x*17;
 let py = centerY - p.y*17;
@@ -114,8 +94,7 @@ ctx.fillText(text,px,py);
 
 }
 
-/* gerakan lebih smooth */
-offset += 0.35;
+offset++;
 
 requestAnimationFrame(draw);
 
