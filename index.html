@@ -60,7 +60,7 @@ for(let i=0;i<heart.length;i++){
 let p = heart[(i+offset)%heart.length];
 
 let px = canvas.width/2 + p.x*18;
-let py = canvas.height/2 - p.y*18;
+let py = canvas.height/2 - p.y*18 + 60;
 
 if(i%10===0){
 ctx.fillText(text,px,py);
