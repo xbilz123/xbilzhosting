@@ -35,6 +35,7 @@ let offset = 0;
 
 let heart = [];
 
+/* buat titik love */
 for(let t=0; t<Math.PI*2; t+=0.01){
 
 let x = 16*Math.pow(Math.sin(t),3);
@@ -44,14 +45,18 @@ heart.push({x,y});
 
 }
 
+/* posisi tengah dan ukuran */
+let centerX = canvas.width/2;
+let centerY = canvas.height/2;
+let scale = 30;
+
 function draw(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
+/* warna dan glow */
 ctx.fillStyle="#ff6fa5";
-ctx.font="14px monospace";
-
-/* glow tipis */
+ctx.font="16px monospace";
 ctx.shadowColor="#ff6fa5";
 ctx.shadowBlur=8;
 
@@ -59,8 +64,8 @@ for(let i=0;i<heart.length;i++){
 
 let p = heart[(i+offset)%heart.length];
 
-let px = canvas.width/2 + p.x*18;
-let py = canvas.height/2 - p.y*18 + 60;
+let px = centerX + p.x*scale;
+let py = centerY - p.y*scale;
 
 if(i%10===0){
 ctx.fillText(text,px,py);
