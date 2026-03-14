@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Heart Text Orbit</title>
+<title>Heart Text Motion</title>
 
 <style>
 body{
@@ -20,27 +20,27 @@ display:block;
 
 <body>
 
-<canvas id="canvas"></canvas>
+<canvas id="c"></canvas>
 
 <script>
 
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const text = "i love u piya ";
-let offset = 0;
+const text = "i love u piya";
+let move = 0;
 
-let heartPoints = [];
+let path = [];
 
-for(let t=0; t<Math.PI*2; t+=0.04){
+for(let t=0; t<Math.PI*2; t+=0.03){
 
 let x = 16*Math.pow(Math.sin(t),3);
 let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
 
-heartPoints.push({x,y});
+path.push({x,y});
 
 }
 
@@ -51,7 +51,7 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.fillStyle="#ff6fa5";
 ctx.font="14px monospace";
 
-heartPoints.forEach((p,i)=>{
+path.forEach((p,i)=>{
 
 let scale = 15;
 
@@ -61,13 +61,15 @@ let y = p.y*scale;
 let px = canvas.width/2 + x;
 let py = canvas.height/2 - y;
 
-let char = text[(i+offset)%text.length];
+let index = (i + move) % path.length;
 
-ctx.fillText(char,px,py);
+if(index % 25 === 0){
+ctx.fillText(text,px,py);
+}
 
 });
 
-offset++;
+move++;
 
 requestAnimationFrame(draw);
 
