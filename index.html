@@ -15,31 +15,15 @@ font-family:monospace;
 canvas{
 display:block;
 }
-
-/* tombol play */
-#start{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-padding:15px 30px;
-font-size:18px;
-background:#ff6fa5;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
 </style>
 
 </head>
 <body>
 
-<button id="start">Tap untuk mulai 💖</button>
-
 <canvas id="canvas"></canvas>
 
-<audio id="music" loop>
+<!-- musik -->
+<audio id="music" autoplay loop muted>
 <source src="https://files.catbox.moe/4f8q2o.mp3" type="audio/mpeg">
 </audio>
 
@@ -48,13 +32,18 @@ cursor:pointer;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const music = document.getElementById("music");
-const startBtn = document.getElementById("start");
 
-/* play musik setelah klik */
-startBtn.onclick = () =>{
+/* coba aktifkan suara */
+window.addEventListener("load", () => {
+music.muted = false;
+music.play().catch(()=>{});
+});
+
+/* kalau user sentuh layar, musik pasti play */
+document.addEventListener("click", () => {
+music.muted = false;
 music.play();
-startBtn.style.display="none";
-}
+});
 
 function resize(){
 canvas.width = window.innerWidth;
