@@ -35,7 +35,6 @@ let offset = 0;
 
 let heart = [];
 
-/* buat bentuk love */
 for(let t=0; t<Math.PI*2; t+=0.01){
 
 let x = (16*Math.pow(Math.sin(t),3)) / 18;
@@ -45,8 +44,8 @@ heart.push({x,y});
 
 }
 
-/* ukuran love */
-let scale = 160;
+/* ukuran love lebih besar dari tadi */
+let scale = 220;
 
 function draw(){
 
