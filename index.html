@@ -1,122 +1,240 @@
+html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko RAM & CPU - PC Gaming</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>KuPanel - Panel Pterodactyl Murah | Auto Delivery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        .glass-effect { 
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hover-lift:hover { transform: translateY(-10px); }
+        .pulse-glow {
+            box-shadow: 0 0 20px rgba(103, 126, 234, 0.4);
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(103, 126, 234, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(103, 126, 234, 0.8); }
+        }
+    </style>
 </head>
-<body>
-    <!-- LOGIN FORM -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-box">
-            <div class="logo">
-                <i class="fas fa-microchip"></i>
-                <h2>PC BUILD SHOP</h2>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen text-white overflow-x-hidden">
+
+<!-- Loading Screen -->
+<div id="loading" class="fixed inset-0 bg-gradient-to-br from-slate-900 to-purple-900 z-[999] flex items-center justify-center">
+    <div class="text-center">
+        <div class="w-20 h-20 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-6"></div>
+        <div class="gradient-text text-2xl font-bold">KuPanel</div>
+        <p class="text-white/60 mt-2">Loading...</p>
+    </div>
+</div>
+
+<!-- Navbar -->
+<nav class="fixed top-0 w-full z-50 glass-effect px-6 py-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-2xl">
+                KP
             </div>
-            <form id="loginForm">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Username" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="email" placeholder="Email@gmail.com" required>
-                </div>
-                <button type="submit" class="login-btn">
-                    <i class="fas fa-arrow-right"></i> MASUK KE TOKO
+            <div>
+                <div class="font-bold text-xl gradient-text">KuPanel</div>
+                <div class="text-xs text-white/60">Panel Pterodactyl Premium</div>
+            </div>
+        </div>
+        <div class="flex items-center space-x-6">
+            <a href="#produk" class="hover:text-purple-300 transition-all duration-300 font-medium">Produk</a>
+            <a href="#fitur" class="hover:text-purple-300 transition-all duration-300 font-medium">Fitur</a>
+            <a href="#cara" class="hover:text-purple-300 transition-all duration-300 font-medium">Cara Order</a>
+            <div class="flex items-center space-x-3">
+                <button id="cartBtn" class="relative p-3 bg-white/10 rounded-2xl hover:bg-white/20 transition-all duration-300">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-red-500 text-xs w-5 h-5 rounded-full flex items-center justify-center text-white font-bold">0</span>
                 </button>
-            </form>
-            <div class="login-footer">
-                <p>Data dikirim ke email setelah bayar!</p>
+                <button class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-user mr-2"></i>Login
+                </button>
             </div>
         </div>
     </div>
+</nav>
 
-    <!-- MAIN SHOP -->
-    <div class="shop-container" id="shopContainer" style="display:none;">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo"><i class="fas fa-microchip"></i> PC BUILD</div>
-                <div class="user-info">
-                    <i class="fas fa-user"></i> <span id="userDisplay"></span>
-                </div>
-                <div class="cart-info">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" id="cartCount">0</span>
-                </div>
+<!-- Hero Section -->
+<section class="pt-32 pb-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/5 to-purple-500/10"></div>
+    <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
+        <div class="animate-fadeInUp animation-delay-200">
+            <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-8 mx-auto max-w-max">
+                <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                <span class="font-medium">🚀 Auto Delivery • QRIS • Instant Active</span>
             </div>
-        </nav>
-
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Pilih RAM & CPU</h1>
-                <p>Build PC Gaming impianmu!</p>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="text-white">Jualan Panel</span><br>
+                <span class="gradient-text">Pterodactyl</span>
+                <span class="text-white block text-4xl md:text-5xl">Murah Meriah</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+                Panel Pterodactyl siap pakai dengan <strong>auto delivery</strong> setelah pembayaran QRIS. 
+                Mulai dari <strong>Rp15.000</strong> - Active dalam <strong>60 detik</strong>!
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
+                <a href="#produk" class="px-12 py-5 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-xl font-bold rounded-3xl shadow-2xl hover:shadow-3xl hover-lift transition-all duration-500 flex items-center mx-auto sm:mx-0">
+                    <i class="fas fa-shopping-cart mr-3 text-xl"></i>
+                    Beli Sekarang
+                </a>
+                <button onclick="scrollToDemo()" class="px-12 py-5 border-2 border-white/30 hover:border-white/50 bg-white/10 backdrop-blur-sm rounded-3xl text-xl font-semibold hover:bg-white/20 hover-lift transition-all duration-500 flex items-center mx-auto sm:mx-0">
+                    <i class="fas fa-play mr-3"></i>
+                    Live Demo
+                </button>
             </div>
-        </section>
-
-        <section class="produk" id="produk">
-            <div class="container">
-                <h2>Pilih Komponen</h2>
-                
-                <!-- CPU -->
-                <div class="kategori">
-                    <h3><i class="fas fa-processor"></i> CPU</h3>
-                    <div class="produk-grid">
-                        <div class="produk-card">
-                            <div class="produk-image"><i class="fas fa-microchip fa-4x"></i></div>
-                            <div class="produk-info">
-                                <h3>Intel i5-13400F</h3>
-                                <div class="harga">Rp 3.250.000</div>
-                                <button class="add-btn" onclick="addToCart('cpu1','Intel i5-13400F',3250000)">Pilih</button>
-                            </div>
-                        </div>
-                        <div class="produk-card">
-                            <div class="produk-image"><i class="fas fa-microchip fa-4x"></i></div>
-                            <div class="produk-info">
-                                <h3>AMD Ryzen 5 7600X</h3>
-                                <div class="harga">Rp 3.800.000</div>
-                                <button class="add-btn" onclick="addToCart('cpu2','AMD Ryzen 5 7600X',3800000)">Pilih</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RAM -->
-                <div class="kategori">
-                    <h3><i class="fas fa-memory"></i> RAM</h3>
-                    <div class="produk-grid">
-                        <div class="produk-card">
-                            <div class="produk-image"><i class="fas fa-memory fa-4x"></i></div>
-                            <div class="produk-info">
-                                <h3>RAM 8GB DDR4</h3>
-                                <div class="harga">Rp 450.000</div>
-                                <button class="add-btn" onclick="addToCart('ram8','RAM 8GB DDR4',450000)">Pilih</button>
-                            </div>
-                        </div>
-                        <div class="produk-card">
-                            <div class="produk-image"><i class="fas fa-memory fa-4x"></i></div>
-                            <div class="produk-info">
-                                <h3>RAM 16GB DDR4</h3>
-                                <div class="harga">Rp 850.000</div>
-                                <button class="add-btn" onclick="addToCart('ram16','RAM 16GB DDR4',850000)">Pilih</button>
-                            </div>
-                        </div>
-                        <div class="produk-card">
-                            <div class="produk-image"><i class="fas fa-memory fa-4x"></i></div>
-                            <div class="produk-info">
-                                <h3>RAM 32GB DDR5</h3>
-                                <div class="harga">Rp 2.100.000</div>
-                                <button class="add-btn" onclick="addToCart('ram32','RAM 32GB DDR5',2100000)">Pilih</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24">
+            <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">10K+</div>
+                <div class="text-white/60 text-sm">Panel Terjual</div>
             </div>
-        </section>
+            <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">99.9%</div>
+                <div class="text-white/60 text-sm">Uptime</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">24/7</div>
+                <div class="text-white/60 text-sm">Support</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">60s</div>
+                <div class="text-white/60 text-sm">Auto Delivery</div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <script src="script.js"></script>
-</body>
-  </html>
+<!-- Products Section -->
+<section id="produk" class="py-24 bg-white/5 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-20 animate-fadeInUp">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                <span class="text-white">Pilih Paket</span>
+                <span class="gradient-text block">Panel Pterodactyl</span>
+            </h2>
+            <p class="text-xl text-white/70 max-w-2xl mx-auto">Harga termurah • Auto delivery • Full feature Pterodactyl terbaru</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Package 1 -->
+            <div class="glass-effect rounded-3xl p-8 hover-lift hover:bg-white/20 transition-all duration-500 group animate-fadeInUp" onclick="selectPackage(1)">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl group-hover:scale-110 transition-all duration-300">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">STARTER</h3>
+                    <div class="text-4xl font-bold gradient-text mb-2">Rp 15.000</div>
+                    <div class="text-sm text-white/60 mb-8">/Bulan</div>
+                </div>
+                <ul class="space-y-3 mb-10 text-left">
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>1 Panel Pterodactyl</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>2 GB RAM</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>20 GB SSD</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>1 vCPU Core</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>500 Mbps Bandwidth</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>Auto Delivery 60 detik</li>
+                </ul>
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-4 px-6 rounded-2xl cursor-pointer hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-xl">
+                    Pilih Paket
+                </div>
+            </div>
+
+            <!-- Package 2 -->
+            <div class="glass-effect rounded-3xl p-8 hover-lift hover:bg-white/20 transition-all duration-500 group animate-fadeInUp animation-delay-200 relative" onclick="selectPackage(2)">
+                <div class="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-4 py-2 rounded-xl text-sm shadow-2xl">
+                        POPULAR
+                    </div>
+                </div>
+                <div class="text-center pt-6">
+                    <div class="w-20 h-20 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl group-hover:scale-110 transition-all duration-300">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">PRO</h3>
+                    <div class="text-4xl font-bold gradient-text mb-2">Rp 35.000</div>
+                    <div class="text-sm text-white/60 mb-8">/Bulan</div>
+                </div>
+                <ul class="space-y-3 mb-10 text-left">
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>3 Panel Pterodactyl</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>8 GB RAM</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>80 GB SSD</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>4 vCPU Core</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>1 Gbps Bandwidth</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>Unlimited Slot</li>
+                </ul>
+                <div class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 px-6 rounded-2xl cursor-pointer hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 shadow-xl">
+                    Pilih Paket
+                </div>
+            </div>
+
+            <!-- Package 3 -->
+            <div class="glass-effect rounded-3xl p-8 hover-lift hover:bg-white/20 transition-all duration-500 group animate-fadeInUp" onclick="selectPackage(3)">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl group-hover:scale-110 transition-all duration-300">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">ENTERPRISE</h3>
+                    <div class="text-4xl font-bold gradient-text mb-2">Rp 75.000</div>
+                    <div class="text-sm text-white/60 mb-8">/Bulan</div>
+                </div>
+                <ul class="space-y-3 mb-10 text-left">
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>10 Panel Pterodactyl</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>24 GB RAM</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>250 GB SSD</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>8 vCPU Core</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>Custom Domain</li>
+                    <li class="flex items-center text-white"><i class="fas fa-check text-emerald-400 mr-3 w-5"></i>VIP Support 24/7</li>
+                </ul>
+                <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-6 rounded-2xl cursor-pointer hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-xl">
+                    Pilih Paket
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- QRIS Payment Modal -->
+<div id="qrisModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[1000] hidden flex items-center justify-center p-4">
+    <div class="glass-effect rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-bounceIn">
+        <div class="p-8">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-bold gradient-text">Bayar dengan QRIS</h2>
+                <button onclick="closeQRIS()" class="p-2 hover:bg-white/20 rounded-2xl transition-all duration-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div id="orderDetails" class="bg-white/10 rounded-2xl p-6 mb-8">
+                <h3 class="font-bold text-xl mb-4">Detail Pesanan</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between"><span>Paket:</span><span id="orderPackage">-</span></div>
+                    <div class="flex justify-between"><span>Harga:</span><span id="orderPrice">Rp 0</span></div>
+                    <div class="flex justify-between font-bold text-lg border-t border-white/20 pt-3 mt-3">
+                        <span>Total:</span><span id="orderTotal">Rp 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="pulse-glow bg-white rounded-2xl p-6 mx-auto max-w-xs mb-6">
+                    <img src="https://api.qris.id/qris/1234567890" alt="QRIS" class="w-full h-64
