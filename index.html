@@ -1,100 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Love Text</title>
-
-<style>
-
-body{
-margin:0;
-overflow:hidden;
-background:black;
-font-family:Arial, Helvetica, sans-serif;
-}
-
-canvas{
-display:block;
-}
-
-.big{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-color:white;
-font-size:55px;
-font-weight:300;
-letter-spacing:14px;
-white-space:nowrap;
-text-shadow:0 0 10px #fff,0 0 30px #ff6fa5;
-pointer-events:none;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko RAM & CPU - PC Gaming</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-
 <body>
+    <!-- LOGIN FORM -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="logo">
+                <i class="fas fa-microchip"></i>
+                <h2>PC BUILD SHOP</h2>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Email@gmail.com" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-arrow-right"></i> MASUK KE TOKO
+                </button>
+            </form>
+            <div class="login-footer">
+                <p>Data dikirim ke email setelah bayar!</p>
+            </div>
+        </div>
+    </div>
 
-<canvas id="canvas"></canvas>
-<div class="big">I LOVE U PIYA</div>
+    <!-- MAIN SHOP -->
+    <div class="shop-container" id="shopContainer" style="display:none;">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo"><i class="fas fa-microchip"></i> PC BUILD</div>
+                <div class="user-info">
+                    <i class="fas fa-user"></i> <span id="userDisplay"></span>
+                </div>
+                <div class="cart-info">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </nav>
 
-<script>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Pilih RAM & CPU</h1>
+                <p>Build PC Gaming impianmu!</p>
+            </div>
+        </section>
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+        <section class="produk" id="produk">
+            <div class="container">
+                <h2>Pilih Komponen</h2>
+                
+                <!-- CPU -->
+                <div class="kategori">
+                    <h3><i class="fas fa-processor"></i> CPU</h3>
+                    <div class="produk-grid">
+                        <div class="produk-card">
+                            <div class="produk-image"><i class="fas fa-microchip fa-4x"></i></div>
+                            <div class="produk-info">
+                                <h3>Intel i5-13400F</h3>
+                                <div class="harga">Rp 3.250.000</div>
+                                <button class="add-btn" onclick="addToCart('cpu1','Intel i5-13400F',3250000)">Pilih</button>
+                            </div>
+                        </div>
+                        <div class="produk-card">
+                            <div class="produk-image"><i class="fas fa-microchip fa-4x"></i></div>
+                            <div class="produk-info">
+                                <h3>AMD Ryzen 5 7600X</h3>
+                                <div class="harga">Rp 3.800.000</div>
+                                <button class="add-btn" onclick="addToCart('cpu2','AMD Ryzen 5 7600X',3800000)">Pilih</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+                <!-- RAM -->
+                <div class="kategori">
+                    <h3><i class="fas fa-memory"></i> RAM</h3>
+                    <div class="produk-grid">
+                        <div class="produk-card">
+                            <div class="produk-image"><i class="fas fa-memory fa-4x"></i></div>
+                            <div class="produk-info">
+                                <h3>RAM 8GB DDR4</h3>
+                                <div class="harga">Rp 450.000</div>
+                                <button class="add-btn" onclick="addToCart('ram8','RAM 8GB DDR4',450000)">Pilih</button>
+                            </div>
+                        </div>
+                        <div class="produk-card">
+                            <div class="produk-image"><i class="fas fa-memory fa-4x"></i></div>
+                            <div class="produk-info">
+                                <h3>RAM 16GB DDR4</h3>
+                                <div class="harga">Rp 850.000</div>
+                                <button class="add-btn" onclick="addToCart('ram16','RAM 16GB DDR4',850000)">Pilih</button>
+                            </div>
+                        </div>
+                        <div class="produk-card">
+                            <div class="produk-image"><i class="fas fa-memory fa-4x"></i></div>
+                            <div class="produk-info">
+                                <h3>RAM 32GB DDR5</h3>
+                                <div class="harga">Rp 2.100.000</div>
+                                <button class="add-btn" onclick="addToCart('ram32','RAM 32GB DDR5',2100000)">Pilih</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
-let texts=[];
-
-for(let i=0;i<90;i++){
-
-texts.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-size:8+Math.random()*18,   // lebih kecil
-speed:1.2+Math.random()*1.4,
-opacity:0.2+Math.random()*0.6
-});
-
-}
-
-function draw(){
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-ctx.textAlign="center";
-ctx.shadowColor="#ff6fa5";
-ctx.shadowBlur=12;
-
-for(let i=0;i<texts.length;i++){
-
-let t=texts[i];
-
-ctx.globalAlpha=t.opacity;
-ctx.font=t.size+"px Arial";
-ctx.fillStyle="white";
-
-ctx.fillText("I LOVE U PIYA",t.x,t.y);
-
-t.y -= t.speed;
-
-if(t.y < -50){
-t.y = canvas.height + 50;
-t.x = Math.random()*canvas.width;
-}
-
-}
-
-requestAnimationFrame(draw);
-
-}
-
-draw();
-
-</script>
-
+    <script src="script.js"></script>
 </body>
-</html>
+  </html>
