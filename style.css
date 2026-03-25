@@ -1,1 +1,185 @@
+// Data produk
+const produkData = [
+    {
+        id: 1,
+        nama: "Beras 5kg",
+        harga: 75000,
+        gambar: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3133?w=300&h=200&fit=crop",
+        stok: 50
+    },
+    {
+        id: 2,
+        nama: "Minyak Goreng 1L",
+        harga: 25000,
+        gambar: "https://images.unsplash.com/photo-1587349812411-8cd0e13cb6d6?w=300&h=200&fit=crop",
+        stok: 30
+    },
+    {
+        id: 3,
+        nama: "Telur Ayam 1kg",
+        harga: 35000,
+        gambar: "https://images.unsplash.com/photo-1603048297194-8f7d9e7f8e7d?w=300&h=200&fit=crop",
+        stok: 20
+    },
+    {
+        id: 4,
+        nama: "Sabun Mandi",
+        harga: 15000,
+        gambar: "https://images.unsplash.com/photo-1581236003836-9f3ed115f5e3?w=300&h=200&fit=crop",
+        stok: 40
+    },
+    {
+        id: 5,
+        nama: "Pasta Gigi",
+        harga: 22000,
+        gambar: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=200&fit=crop",
+        stok: 25
+    },
+    {
+        id: 6,
+        nama: "Detergen 800g",
+        harga: 28000,
+        gambar: "https://images.unsplash.com/photo-1580894908361-9679e922f6e3?w=300&h=200&fit=crop",
+        stok: 35
+    }
+];
 
+let cart = [];
+
+// DOM Elements
+const produkGrid = document.getElementById('produkGrid');
+const cartModal = document.getElementById('cartModal');
+const cartCount = document.querySelector('.cart-count');
+const cartItems = document.getElementById('cartItems');
+const cartTotal = document.getElementById('cartTotal');
+const closeModal = document.querySelector('.close');
+const cartIcon = document.querySelector('.cart-icon');
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+// Render produk
+function renderProduk() {
+    produkGrid.innerHTML = '';
+    produkData.forEach(produk => {
+        const produkCard = document.createElement('div');
+        produkCard.classList.add('produk-card');
+        produkCard.innerHTML = `
+            <img src="${produk.gambar}" alt="${produk.nama}" class="produk-image">
+            <div class="produk-info">
+                <h3>${produk.nama}</h3>
+                <div class="produk-price">Rp ${produk.harga.toLocaleString('id-ID')}</div>
+                <button class="add-to-cart" onclick="addToCart(${produk.id})">
+                    <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+            </div>
+        `;
+        produkGrid.appendChild(produkCard);
+    });
+}
+
+// Tambah ke keranjang
+function addToCart(produkId) {
+    const produk = produkData.find(p => p.id === produkId);
+    const existingItem = cart.find(item => item.id === produkId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({...produk, quantity: 1});
+    }
+    
+    updateCart();
+    alert(`${produk.nama} ditambahkan ke keranjang!`);
+}
+
+// Update tampilan keranjang
+function updateCart() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+    
+    renderCartItems();
+    
+    const totalHarga = cart.reduce((sum, item) => sum + (item.harga * item.quantity), 0);
+    cartTotal.textContent = `Rp ${totalHarga.toLocaleString('id-ID')}`;
+}
+
+// Render item keranjang
+function renderCartItems() {
+    cartItems.innerHTML = '';
+    
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p>Keranjang kosong</p>';
+        return;
+    }
+    
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+            <div>
+                <h4>${item.nama}</h4>
+                <p>Rp ${item.harga.toLocaleString('id-ID')} x ${item.quantity}</p>
+            </div>
+            <div>
+                <button onclick="updateCartQuantity(${item.id}, -1)">-</button>
+                <span>${item.quantity}</span>
+                <button onclick="updateCartQuantity(${item.id}, 1)">+</button>
+                <button onclick="removeFromCart(${item.id})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; margin-left: 10px; border-radius: 4px;">Hapus</button>
+            </div>
+        `;
+        cartItems.appendChild(cartItem);
+    });
+}
+
+// Update quantity
+function updateCartQuantity(produkId, change) {
+    const item = cart.find(item => item.id === produkId);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            removeFromCart(produkId);
+        } else {
+            updateCart();
+        }
+    }
+}
+
+// Hapus dari keranjang
+function removeFromCart(produkId) {
+    cart = cart.filter(item => item.id !== produkId);
+    updateCart();
+}
+
+// Event listeners
+cartIcon.addEventListener('click', () => {
+    cartModal.style.display = 'block';
+});
+
+closeModal.addEventListener('click', () => {
+    cartModal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+        cartModal.style.display = 'none';
+    }
+});
+
+document.querySelector('.checkout-btn').addEventListener('click', () => {
+    if (cart.length === 0) {
+        alert('Keranjang kosong!');
+    } else {
+        alert('Terima kasih atas pembelian Anda! Pesanan akan diproses.');
+        cart = [];
+        updateCart();
+        cartModal.style.display = 'none';
+    }
+});
+
+// Mobile menu
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href
