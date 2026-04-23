@@ -1,228 +1,100 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuPanel - Panel Pterodactyl Murah</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        *{font-family:'Segoe UI',sans-serif}body{background:linear-gradient(135deg,#0f0f23 0%,#1a0033 50%,#2d1b69 100%);color:#fff}.glass{background:hsla(0,0%,100%,.1);backdrop-filter:blur(20px);border:1px solid hsla(0,0%,100%,.2)}.gradient-text{background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.hover-lift:hover{transform:translateY(-10px)}
-    </style>
+<meta charset="UTF-8">
+<title>Love Text</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:black;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+canvas{
+display:block;
+}
+
+.big{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+font-size:55px;
+font-weight:300;
+letter-spacing:14px;
+white-space:nowrap;
+text-shadow:0 0 10px #fff,0 0 30px #ff6fa5;
+pointer-events:none;
+}
+
+</style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="fixed top-0 w-full z-50 glass px-6 py-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-xl font-bold">KP</div>
-            <span class="font-bold text-xl gradient-text">KuPanel</span>
-        </div>
-        <div class="flex space-x-6">
-            <a href="#produk" class="hover:text-purple-300 transition-all">Produk</a>
-            <a href="#faq" class="hover:text-purple-300 transition-all">FAQ</a>
-            <a href="https://wa.me/6281234567890" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-xl font-bold transition-all">WhatsApp</a>
-        </div>
-    </div>
-</nav>
+<canvas id="canvas"></canvas>
+<div class="big">I LOVE U PIYA</div>
 
-<!-- Hero -->
-<section class="pt-32 pb-24 text-center">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-12">
-            <div class="inline-flex px-6 py-3 bg-white/10 backdrop-blur rounded-full mb-8 mx-auto max-w-max">
-                <i class="fas fa-bolt text-yellow-400 mr-3"></i>Auto Delivery • QRIS • 60 Detik
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6">Panel Pterodactyl<br><span class="gradient-text">Rp15.000</span></h1>
-            <p class="text-xl md:text-2xl opacity-90 mb-12 max-w-3xl mx-auto">Bayar QRIS → Panel aktif otomatis → Langsung jualan!</p>
-            <a href="#produk" class="inline-flex items-center px-12 py-5 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-xl font-bold rounded-3xl shadow-2xl hover-lift transition-all">
-                <i class="fas fa-shopping-cart mr-3"></i>Beli Sekarang
-            </a>
-        </div>
-    </div>
-</section>
+<script>
 
-<!-- Produk -->
-<section id="produk" class="py-24 bg-white/5">
-    <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl md:text-5xl font-bold text-center mb-20">Pilih Paket</h2>
-        <div class="grid md:grid-cols-3 gap-8 mb-24">
-            <div class="glass rounded-3xl p-8 hover-lift transition-all cursor-pointer" onclick="window.location.href='checkout.html?paket=starter&harga=15000'">
-                <div class="text-center mb-8">
-                    <div class="w-20 h-20 bg-blue-500 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl font-bold text-white">S</div>
-                    <h3 class="text-2xl font-bold mb-4">STARTER</h3>
-                    <div class="text-4xl font-bold gradient-text mb-2">Rp15.000</div>
-                </div>
-                <ul class="space-y-3 mb-10">
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>1 Panel</li>
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>2GB RAM</li>
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>20GB SSD</li>
-                </ul>
-                <div class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-2xl text-center transition-all">Beli Rp15K</div>
-            </div>
-            <div class="glass rounded-3xl p-8 hover-lift transition-all cursor-pointer relative" onclick="window.location.href='checkout.html?paket=pro&harga=35000'">
-                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-black font-bold px-6 py-2 rounded-xl">🔥 TERLARIS</div>
-                <div class="text-center mb-8 pt-8">
-                    <div class="w-20 h-20 bg-emerald-500 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl font-bold text-white">P</div>
-                    <h3 class="text-2xl font-bold mb-4">PRO</h3>
-                    <div class="text-4xl font-bold gradient-text mb-2">Rp35.000</div>
-                </div>
-                <ul class="space-y-3 mb-10">
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>3 Panel</li>
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>8GB RAM</li>
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>80GB SSD</li>
-                </ul>
-                <div class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-2xl text-center transition-all">Beli Rp35K</div>
-            </div>
-            <div class="glass rounded-3xl p-8 hover-lift transition-all cursor-pointer" onclick="window.location.href='checkout.html?paket=enterprise&harga=75000'">
-                <div class="text-center mb-8">
-                    <div class="w-20 h-20 bg-purple-500 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl font-bold text-white">E</div>
-                    <h3 class="text-2xl font-bold mb-4">ENTERPRISE</h3>
-                    <div class="text-4xl font-bold gradient-text mb-2">Rp75.000</div>
-                </div>
-                <ul class="space-y-3 mb-10">
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>10 Panel</li>
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>24GB RAM</li>
-                    <li><i class="fas fa-check text-emerald-400 mr-3"></i>250GB SSD</li>
-                </ul>
-                <div class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-8 rounded-2xl text-center transition-all">Beli Rp75K</div>
-            </div>
-        </div>
-    </div>
-</section>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-<!-- FAQ -->
-<section id="faq" class="py-24 bg-white/3">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">Pertanyaan Umum</h2>
-            <p class="text-xl opacity-90 max-w-2xl mx-auto">Masih bingung? Berikut adalah beberapa pertanyaan yang sering ditanyakan oleh pengguna kami.</p>
-        </div>
-        
-        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div class="glass rounded-2xl p-6 hover:bg-white/20 transition-all cursor-pointer group">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-purple-300 transition-all">Apa itu panel Pterodactyl?</h3>
-                <p class="opacity-90">Panel Pterodactyl adalah panel game server control premium yang powerful untuk hosting Minecraft, Garry's Mod, dan 100+ game lainnya.</p>
-            </div>
-            <div class="glass rounded-2xl p-6 hover:bg-white/20 transition-all cursor-pointer group">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-purple-300 transition-all">Apakah saya bisa menjual ulang panel?</h3>
-                <p class="opacity-90">Ya! Semua panel bisa dijual ulang. Buat subdomain dan jual ke customer Anda dengan margin keuntungan besar.</p>
-            </div>
-            <div class="glass rounded-2xl p-6 hover:bg-white/20 transition-all cursor-pointer group">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-purple-300 transition-all">Berapa lama panel aktif setelah pembayaran?</h3>
-                <p class="opacity-90">Panel akan aktif otomatis dalam 60 detik setelah QRIS terkonfirmasi. Data lengkap (URL, user, pass) langsung muncul.</p>
-            </div>
-            <div class="glass rounded-2xl p-6 hover:bg-white/20 transition-all cursor-pointer group">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-purple-300 transition-all">Metode pembayaran apa saja?</h3>
-                <p class="opacity-90">QRIS (semua bank), OVO, DANA, ShopeePay, LinkAja, GoPay. Scan sekali, panel langsung aktif!</p>
-            </div>
-            <div class="glass rounded-2xl p-6 hover:bg-white/20 transition-all cursor-pointer group">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-purple-300 transition-all">Apakah ada garansi?</h3>
-                <p class="opacity-90">100% garansi 7 hari. Jika panel down, kami ganti 100% atau refund penuh tanpa syarat.</p>
-            </div>
-            <div class="glass rounded-2xl p-6 hover:bg-white/20 transition-all cursor-pointer group">
-                <h3 class="font-bold text-xl mb-3 group-hover:text-purple-300 transition-all">Bagaimana jika lupa password panel?</h3>
-                <p class="opacity-90">Reset password melalui email admin atau hubungi support WA kami 24/7 untuk bantuan instan.</p>
-            </div>
-        </div>
-    </div>
-</section>
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-<!-- Mengapa Memilih Kami -->
-<section class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">Mengapa Memilih Kami?</h2>
-            <p class="text-xl opacity-90 max-w-2xl mx-auto">Kami menyediakan layanan panel Pterodactyl terbaik dengan fitur lengkap dan harga terjangkau.</p>
-        </div>
-        
-        <div class="grid md:grid-cols-4 gap-8 mb-24">
-            <div class="text-center group hover:scale-105 transition-all duration-500">
-                <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:rotate-12">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4">Keamanan Terjamin</h3>
-                <p class="opacity-90">Firewall canggih, DDoS protection, backup otomatis 24/7</p>
-            </div>
-            <div class="text-center group hover:scale-105 transition-all duration-500">
-                <div class="w-20 h-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:rotate-12">
-                    <i class="fas fa-tachometer-alt"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4">Performa Tinggi</h3>
-                <p class="opacity-90">CPU/RAM dedicated, NVMe SSD, jaringan 1Gbps+</p>
-            </div>
-            <div class="text-center group hover:scale-105 transition-all duration-500">
-                <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:rotate-12">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4">Uptime 99.9%</h3>
-                <p class="opacity-90">Monitoring 24/7, auto failover, SLA guarantee</p>
-            </div>
-            <div class="text-center group hover:scale-105 transition-all duration-500">
-                <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl group-hover:rotate-12">
-                    <i class="fas fa-credit-card"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-4">Pembayaran Mudah</h3>
-                <p class="opacity-90">QRIS semua bank, e-wallet, auto delivery instan</p>
-            </div>
-        </div>
-    </div>
-</section>
+let texts=[];
 
-<!-- Statistik -->
-<section class="py-24 bg-white/5">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-                <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">1.096</div>
-                <div class="text-xl opacity-90">Total Pengguna</div>
-            </div>
-            <div>
-                <div class="text-4xl md:text-5xl font-bold text-emerald-400 mb-3">1.323</div>
-                <div class="text-xl opacity-90">Total Server</div>
-            </div>
-            <div>
-                <div class="text-4xl md:text-5xl font-bold text-yellow-400 mb-3">1.323</div>
-                <div class="text-xl opacity-90">Pembelian Sukses</div>
-            </div>
-        </div>
-    </div>
-</section>
+for(let i=0;i<90;i++){
 
-<!-- Testimoni -->
-<section class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-20">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6 gradient-text">Apa Kata Mereka</h2>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="glass rounded-2xl p-8 text-center">
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto mb-6 flex items-center justify-center text-2xl font-bold">S</div>
-                <p class="opacity-90 mb-6">"Panel paling murah dan stabil! Auto delivery beneran 60 detik!"</p>
-                <div class="font-bold gradient-text">Shiroko</div>
-            </div>
-            <div class="glass rounded-2xl p-8 text-center">
-                <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto mb-6 flex items-center justify-center text-2xl font-bold">K</div>
-                <p class="opacity-90 mb-6">"Support WA 24/7 mantap! Uptime 100% selama 3 bulan."</p>
-                <div class="font-bold text-emerald-400">KuPanel User</div>
-            </div>
-            <div class="glass rounded-2xl p-8 text-center">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto mb-6 flex items-center justify-center text-2xl font-bold">P</div>
-                <p class="opacity-90 mb-6">"Sudah jual 50+ panel ke customer, semua puas!"</p>
-                <div class="font-bold text-blue-400">Reseller Pro</div>
-            </div>
-        </div>
-    </div>
-</section>
+texts.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:8+Math.random()*18,   // lebih kecil
+speed:1.2+Math.random()*1.4,
+opacity:0.2+Math.random()*0.6
+});
 
-<!-- Partnership -->
-<section class="py-24 bg-white/5">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-20">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6 gradient-text">Partnership</h2>
-            <p class="opacity-90 mb-12">Jadi partner resmi KuPanel dan dapatkan diskon spesial!</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="glass rounded-2xl p-8 text-center hover-lift transition-all">
-                <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl mx-auto mb-6 flex items-center justify-center text-xl font-bold text-white">
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.textAlign="center";
+ctx.shadowColor="#ff6fa5";
+ctx.shadowBlur=12;
+
+for(let i=0;i<texts.length;i++){
+
+let t=texts[i];
+
+ctx.globalAlpha=t.opacity;
+ctx.font=t.size+"px Arial";
+ctx.fillStyle="white";
+
+ctx.fillText("I LOVE U PIYA",t.x,t.y);
+
+t.y -= t.speed;
+
+if(t.y < -50){
+t.y = canvas.height + 50;
+t.x = Math.random()*canvas.width;
+}
+
+}
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+</script>
+
+</body>
+</html>
